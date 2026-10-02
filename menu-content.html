@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tubatsi Grill House — Menu</title>
+<style>
+  :root {
+    --brand-red: #d62828;
+    --brand-dark: #1a1a1a;
+    --brand-orange: #f77f00;
+    --card-bg: #ffffff;
+    --page-bg: #f4f1ee;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--page-bg);
+    margin: 0;
+    color: #222;
+  }
+
+  /* ===== HERO HEADER ===== */
+  .menu-hero {
+    background: linear-gradient(135deg, var(--brand-dark) 0%, #2b2b2b 100%);
+    color: #fff;
+    text-align: center;
+    padding: 40px 20px 30px;
+  }
+  .menu-hero .flame {
+    font-size: 46px;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .menu-hero h1 {
+    font-size: 2.4rem;
+    margin: 0;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, var(--brand-orange), var(--brand-red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .menu-hero p {
+    margin: 6px 0 0;
+    color: #ccc;
+    font-size: 0.95rem;
+  }
+
+  /* ===== QUICK CATEGORY NAV ===== */
+  .cat-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 12px;
+    background: var(--brand-dark);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .cat-nav a {
+    color: #fff;
+    background: rgba(255,255,255,0.08);
+    padding: 6px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .cat-nav a:hover {
+    background: var(--brand-red);
+  }
+
+  /* ===== MAIN CONTAINER ===== */
+  .menu-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px 16px 60px;
+  }
+
+  .menu-category {
+    margin-bottom: 36px;
+    scroll-margin-top: 70px;
+  }
+
+  .category-banner {
+    background: linear-gradient(90deg, var(--brand-red), var(--brand-orange));
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+
+  .menu-item {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    border-left: 4px solid var(--brand-red);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .menu-item .item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .menu-item h3 {
+    margin: 0;
+    font-size: 1.02rem;
+    color: var(--brand-dark);
+  }
+
+  .menu-item .price {
+    font-weight: 700;
+    color: var(--brand-red);
+    font-size: 1.02rem;
+    white-space: nowrap;
+  }
+
+  .menu-item .description {
+    margin: 6px 0 0;
+    font-size: 0.83rem;
+    color: #666;
+    line-height: 1.35;
+  }
+
+  /* Simple single-line items (no description) get a bit more breathing room */
+  .menu-item.simple {
+    flex-direction: row;
+    align-items: center;
+  }
+  .menu-item.simple .item-top { width: 100%; }
+
+  /* ===== EXTRAS LIST (small add-on items) ===== */
+  .extras-list {
+    columns: 2;
+    column-gap: 24px;
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    border-left: 4px solid var(--brand-orange);
+  }
+  .extras-list div {
+    padding: 4px 0;
+    font-size: 0.88rem;
+    break-inside: avoid;
+  }
+
+  /* ===== ORDER / CONTACT BANNER ===== */
+  .order-banner {
+    background: var(--brand-dark);
+    color: #fff;
+    border-radius: 10px;
+    padding: 22px 24px;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .order-banner h2 {
+    margin: 0 0 8px;
+    color: var(--brand-orange);
+    font-size: 1.3rem;
+    text-transform: uppercase;
+  }
+  .order-banner a {
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1.05rem;
+    display: block;
+    margin: 4px 0;
+  }
+  .order-banner a:hover { color: var(--brand-orange); }
+
+  @media (max-width: 480px) {
+    .extras-list { columns: 1; }
+    .menu-hero h1 { font-size: 1.7rem; }
+  }
+
+  /* ===== SEARCH BAR ===== */
+  .search-wrap {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 18px 16px 4px;
+  }
+  .search-wrap input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 24px;
+    border: 2px solid #ddd;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-wrap input:focus {
+    border-color: var(--brand-red);
+  }
+  .no-results {
+    text-align: center;
+    color: #888;
+    padding: 30px 10px;
+    display: none;
+    font-size: 0.95rem;
+  }
+
+  /* ===== ADD TO CART BUTTON ===== */
+  .menu-item {
+    position: relative;
+  }
+  .add-btn {
+    margin-top: 8px;
+    align-self: flex-start;
+    background: var(--brand-red);
+    color: #fff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .add-btn:hover { background: #b31f1f; }
+  .add-btn:active { transform: scale(0.95); }
+  .add-btn.added { background: #2a9d4a; }
+
+  .menu-item.simple .item-top { flex-wrap: wrap; }
+  .menu-item.simple .add-btn { margin-top: 6px; margin-left: auto; }
+
+  .item-qty {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--brand-dark);
+    background: #f1f1f1;
+    border-radius: 12px;
+    padding: 5px 10px;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .item-qty button {
+    background: var(--brand-dark);
+    color: #fff;
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.85rem;
+    line-height: 1;
+  }
+
+  /* ===== FLOATING CART BUTTON ===== */
+  .cart-fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--brand-red);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 14px 22px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    cursor: pointer;
+    z-index: 100;
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+  .cart-fab .cart-count {
+    background: #fff;
+    color: var(--brand-red);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+
+  /* ===== CART PANEL (slide-in) ===== */
+  .cart-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    z-index: 200;
+  }
+  .cart-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(360px, 100%);
+    height: 100%;
+    background: #fff;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    z-index: 201;
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+  }
+  .cart-overlay.open { display: block; }
+  .cart-overlay.open .cart-panel { transform: translateX(0); }
+
+  .cart-header {
+    background: var(--brand-dark);
+    color: #fff;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .cart-header h2 { margin: 0; font-size: 1.1rem; }
+  .cart-header button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.4rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 20px;
+  }
+  .cart-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+    gap: 8px;
+  }
+  .cart-row .cart-row-name { flex: 1; }
+  .cart-row .cart-row-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cart-row .cart-row-controls button {
+    background: var(--brand-dark);
+    color: #fff;
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.85rem;
+    line-height: 1;
+  }
+  .cart-empty-msg {
+    text-align: center;
+    color: #999;
+    padding: 40px 10px;
+    font-size: 0.9rem;
+  }
+
+  .cart-footer {
+    padding: 16px 20px 20px;
+    border-top: 2px solid #f1f1f1;
+  }
+  .cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+  }
+  .checkout-btn {
+    width: 100%;
+    background: var(--brand-red);
+    color: #fff;
+    border: none;
+    padding: 13px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .checkout-note {
+    font-size: 0.75rem;
+    color: #999;
+    text-align: center;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<div class="menu-hero">
+  <span class="flame">🔥</span>
+  <h1>Tubatsi Grill House</h1>
+  <p>Burgers &bull; Kotas &bull; Combo Meals &bull; Grilled &bull; Breakfast</p>
+</div>
+
+<!-- ================= SEARCH ================= -->
+<div class="search-wrap">
+  <input type="text" id="menuSearch" placeholder="🔍 Search the menu (e.g. burger, kota, chips)...">
+</div>
+
+<!-- ================= QUICK NAV ================= -->
+<nav class="cat-nav" id="catNav">
+  <a href="#burgers">Burgers</a>
+  <a href="#wraps">Wraps</a>
+  <a href="#kotas">Kotas</a>
+  <a href="#breakfast">Breakfast</a>
+  <a href="#sandwich">Sandwich</a>
+  <a href="#russians">Russians</a>
+  <a href="#combo">Combo Meals</a>
+  <a href="#ribs">Ribs</a>
+  <a href="#grilled">Grilled</a>
+  <a href="#chicken">Chicken</a>
+  <a href="#chips">Chips</a>
+  <a href="#wors">Wors</a>
+  <a href="#extras">Extras</a>
+</nav>
+
+<div class="menu-wrapper">
+
+  <!-- ================= BURGERS ================= -->
+  <section class="menu-category" id="burgers">
+    <div class="category-banner">Burgers</div>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="item-top"><h3>Jumbo Burger</h3><span class="price">R42</span></div>
+        <p class="description">Beef patty, veggies and sauce</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Chicken Burger</h3><span class="price">R42</span></div>
+        <p class="description">Chicken patty, veggies and sauce</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Jumbo Cheese Burger</h3><span class="price">R48</span></div>
+        <p class="description">Beef patty, cheese, veggies and our sauce</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Chillie Cheese Burger</h3><span class="price">R48</span></div>
+        <p class="description">Beef patty, veggies and sauce</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Bacon and Cheese Burger</h3><span class="price">R52</span></div>
+        <p class="description">Beef patty, bacon, cheese, veggies and sauce</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Double Double</h3><span class="price">R75</span></div>
+        <p class="description">2x beef patty, 2x bacon, 2x cheese, veggies and sauce</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Big Boss Burger</h3><span class="price">R90</span></div>
+        <p class="description">4x beef patty, 2x bacon, 2x cheese, veggies and sauce</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WRAPS ================= -->
+  <section class="menu-category" id="wraps">
+    <div class="category-banner">Wraps</div>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="item-top"><h3>Chicken Wrap</h3><span class="price">R47</span></div>
+        <p class="description">Stir-fry chicken, tzatziki sauce, cucumber, tomato stir-fry vegetables</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Beef Wrap</h3><span class="price">R47</span></div>
+        <p class="description">Stir-fry beef, tzatziki sauce, cucumber, tomato stir-fry vegetables</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Chicken Crunch Wrap</h3><span class="price">R47</span></div>
+        <p class="description">Crunchy chicken breast, tzatziki sauce, cucumber, tomato stir-fry vegetables</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KOTAS ================= -->
+  <section class="menu-category" id="kotas">
+    <div class="category-banner">Kotas</div>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="item-top"><h3>Base Kota</h3><span class="price">R30</span></div>
+        <p class="description">Chips, egg and cheese</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Kota Lite</h3><span class="price">R38</span></div>
+        <p class="description">Aachar/chakalaka, chips, egg, cheese, chips and vianna</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Loxtion Kota</h3><span class="price">R42</span></div>
+        <p class="description">Aachar/chakalaka, chips, polony, cheese, chips and Russian</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Makoya</h3><span class="price">R44</span></div>
+        <p class="description">Aachar/chakalaka, beef patty, tomato, egg, cheese, chips and lattice</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Mega Kota</h3><span class="price">R50</span></div>
+        <p class="description">Russian, vianna, cheese, chips, beef patty</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BREAKFAST ================= -->
+  <section class="menu-category" id="breakfast">
+    <div class="category-banner">Breakfast</div>
+    <div class="menu-grid">
+      <div class="menu-item simple"><div class="item-top"><h3>Egg and Chip Roll</h3><span class="price">R35</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Egg &amp; Bacon Roll</h3><span class="price">R38</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Russian and Chip Roll</h3><span class="price">R38</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Russian and Egg Roll</h3><span class="price">R38</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Wors and Chip Roll</h3><span class="price">R38</span></div></div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Sunshine Breakfast</h3><span class="price">R45</span></div>
+        <p class="description">2 eggs, Russian, baked beans &amp; chips</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Griller's Choice</h3><span class="price">R52</span></div>
+        <p class="description">1 egg, beef patty, wors, tomato, chips &amp; bread roll</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SANDWICH ================= -->
+  <section class="menu-category" id="sandwich">
+    <div class="category-banner">Sandwich</div>
+    <div class="menu-grid">
+      <div class="menu-item simple"><div class="item-top"><h3>Egg &amp; Tomato</h3><span class="price">R28</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Cheese &amp; Tomato</h3><span class="price">R28</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Cheese, Egg &amp; Tomato</h3><span class="price">R34</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Bacon and Cheese</h3><span class="price">R32</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Bacon and Egg</h3><span class="price">R32</span></div></div>
+    </div>
+  </section>
+
+  <!-- ================= RUSSIANS ================= -->
+  <section class="menu-category" id="russians">
+    <div class="category-banner">Russians</div>
+    <div class="menu-grid">
+      <div class="menu-item simple"><div class="item-top"><h3>2 x Vianna and Chips</h3><span class="price">R40</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Russian</h3><span class="price">R20</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Russian and Chips</h3><span class="price">R45</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Jumbo Russian</h3><span class="price">R25</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Jumbo Russian and Chips</h3><span class="price">R50</span></div></div>
+    </div>
+  </section>
+
+  <!-- ================= COMBO MEALS ================= -->
+  <section class="menu-category" id="combo">
+    <div class="category-banner">Combo Meals</div>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="item-top"><h3>Braai Box</h3><span class="price">R85</span></div>
+        <p class="description">Freshly grilled brisket, wors, pap or chips</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Mixed Box</h3><span class="price">R80</span></div>
+        <p class="description">Freshly grilled &frac14; chicken, wors, pap or chips</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Mega Meal</h3><span class="price">R89</span></div>
+        <p class="description">Freshly grilled &frac14; chicken, chuck, pap or chips</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Champ Meal</h3><span class="price">R140</span></div>
+        <p class="description">Freshly grilled lamb chop, 300g ribs, wors, pap or chips</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top"><h3>Giga Meal</h3><span class="price">R145</span></div>
+        <p class="description">2x brisket, &frac14; chicken, wors, pap or chips</p>
+      </div>
+      <div class="menu-item simple"><div class="item-top"><h3>Pap and Beef Stew</h3><span class="price">R48</span></div></div>
+    </div>
+  </section>
+
+  <!-- ================= RIBS ================= -->
+  <section class="menu-category" id="ribs">
+    <div class="category-banner">Ribs</div>
+    <div class="menu-grid">
+      <div class="menu-item simple"><div class="item-top"><h3>300g</h3><span class="price">R60</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>300g with Chips</h3><span class="price">R80</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>600g</h3><span class="price">R115</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>600g with Chips</h3><span class="price">R130</span></div></div>
+    </div>
+  </section>
+
+  <!-- ================= GRILLED ================= -->
+  <section class="menu-category" id="grilled">
+    <div class="category-banner">Grilled</div>
+    <div class="menu-grid">
+      <div class="menu-item simple"><div class="item-top"><h3>Lamb Chop</h3><span class="price">R28</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Lamb and Chips</h3><span class="price">R45</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Brisket</h3><span class="price">R35</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Brisket &amp; Chips</h3><span class="price">R58</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Chuck</h3><span class="price">R40</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Chuck &amp; Chips</h3><span class="price">R68</span></div></div>
+    </div>
+  </section>
+
+  <!-- ================= CHICKEN ================= -->
+  <section class="menu-category" id="chicken">
+    <div class="category-banner">Chicken</div>
+    <div class="menu-grid">
+      <div class="menu-item simple"><div class="item-top"><h3>Wings and Chips</h3><span class="price">R45</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Drum Sticks and Chips</h3><span class="price">R48</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>&frac14; Chicken</h3><span class="price">R39</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>&frac14; Chicken and Chips</h3><span class="price">R59</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>&frac12; Chicken</h3><span class="price">R68</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>&frac12; Chicken and Chips</h3><span class="price">R88</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Full Chicken</h3><span class="price">R135</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Full Chicken and Chips</h3><span class="price">R160</span></div></div>
+    </div>
+  </section>
+
+  <!-- ================= CHIPS ================= -->
+  <section class="menu-category" id="chips">
+    <div class="category-banner">Chips</div>
+    <div class="menu-grid">
+      <div class="menu-item simple"><div class="item-top"><h3>Mini</h3><span class="price">R22</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Small</h3><span class="price">R30</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Medium</h3><span class="price">R40</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Large</h3><span class="price">R68</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Jumbo</h3><span class="price">R80</span></div></div>
+    </div>
+  </section>
+
+  <!-- ================= WORS ================= -->
+  <section class="menu-category" id="wors">
+    <div class="category-banner">Wors</div>
+    <div class="menu-grid">
+      <div class="menu-item simple"><div class="item-top"><h3>Wors</h3><span class="price">R21</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Wors Roll</h3><span class="price">R32</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Wors and Chip Roll</h3><span class="price">R38</span></div></div>
+      <div class="menu-item simple"><div class="item-top"><h3>Wors and Chips</h3><span class="price">R48</span></div></div>
+    </div>
+  </section>
+
+  <!-- ================= EXTRAS ================= -->
+  <section class="menu-category" id="extras">
+    <div class="category-banner">Extras &amp; Add-ons</div>
+    <div class="extras-list">
+      <div>Big Atchar</div>
+      <div>Small Atchar</div>
+      <div>Spoon Atchar</div>
+      <div>Loaf Bread</div>
+      <div>Half Bread</div>
+      <div>Bread Roll</div>
+      <div>Cheese</div>
+      <div>Vienna</div>
+      <div>Polony</div>
+      <div>Egg</div>
+      <div>Biscuits</div>
+      <div>Packet Sweets</div>
+      <div>Chicken Nuggets</div>
+      <div>Plastic Bag</div>
+      <div>Paper Cup</div>
+    </div>
+  </section>
+
+  <!-- ================= ORDER / CONTACT ================= -->
+  <div class="order-banner">
+    <h2>Order Now</h2>
+    <a href="tel:+27817753132">📞 +27 81 775 3132</a>
+    <a href="tel:+27829644499">📞 +27 82 964 4499</a>
+  </div>
+
+</div>
+
+<!-- ================= FLOATING CART BUTTON ================= -->
+<button class="cart-fab" id="cartFab">
+  🛒 View Cart <span class="cart-count" id="cartCount">0</span>
+</button>
+
+<!-- ================= CART PANEL ================= -->
+<div class="cart-overlay" id="cartOverlay">
+  <div class="cart-panel">
+    <div class="cart-header">
+      <h2>Your Order</h2>
+      <button id="closeCart">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <p class="cart-empty-msg">Your cart is empty. Add items from the menu to get started.</p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">R0</span>
+      </div>
+      <button class="checkout-btn" id="checkoutBtn">Checkout</button>
+      <p class="checkout-note">Order processing coming soon — checkout is a placeholder for now.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const cart = {}; // { itemId: { name, price, qty } }
+  let itemCounter = 0;
+
+  // ---------- STEP 1: turn every existing menu-item into an interactive one ----------
+  document.querySelectorAll(".menu-item").forEach((item) => {
+    const nameEl = item.querySelector("h3");
+    const priceEl = item.querySelector(".price");
+    if (!nameEl || !priceEl) return;
+
+    const name = nameEl.textContent.trim();
+    const price = parseInt(priceEl.textContent.replace(/[^0-9]/g, ""), 10) || 0;
+    const id = "item-" + (itemCounter++);
+
+    item.dataset.itemId = id;
+    item.dataset.name = name.toLowerCase();
+
+    // Container for button + quantity stepper
+    const controls = document.createElement("div");
+    controls.style.display = "flex";
+    controls.style.alignItems = "center";
+    controls.style.gap = "8px";
+
+    const addBtn = document.createElement("button");
+    addBtn.className = "add-btn";
+    addBtn.textContent = "+ Add";
+
+    const qtyBox = document.createElement("div");
+    qtyBox.className = "item-qty";
+    qtyBox.innerHTML =
+      '<button class="qty-minus">−</button><span class="qty-value">0</span><button class="qty-plus">+</button>';
+
+    controls.appendChild(addBtn);
+    controls.appendChild(qtyBox);
+    item.appendChild(controls);
+
+    function refreshQtyDisplay() {
+      const qty = cart[id] ? cart[id].qty : 0;
+      qtyBox.querySelector(".qty-value").textContent = qty;
+      if (qty > 0) {
+        addBtn.style.display = "none";
+        qtyBox.style.display = "flex";
+      } else {
+        addBtn.style.display = "inline-block";
+        qtyBox.style.display = "none";
+      }
+    }
+
+    addBtn.addEventListener("click", () => {
+      cart[id] = cart[id] || { name, price, qty: 0 };
+      cart[id].qty += 1;
+      addBtn.classList.add("added");
+      setTimeout(() => addBtn.classList.remove("added"), 250);
+      refreshQtyDisplay();
+      renderCart();
+    });
+
+    qtyBox.querySelector(".qty-plus").addEventListener("click", () => {
+      cart[id].qty += 1;
+      refreshQtyDisplay();
+      renderCart();
+    });
+
+    qtyBox.querySelector(".qty-minus").addEventListener("click", () => {
+      cart[id].qty -= 1;
+      if (cart[id].qty <= 0) delete cart[id];
+      refreshQtyDisplay();
+      renderCart();
+    });
+  });
+
+  // ---------- STEP 2: search filter ----------
+  const searchInput = document.getElementById("menuSearch");
+  searchInput.addEventListener("input", () => {
+    const q = searchInput.value.trim().toLowerCase();
+    document.querySelectorAll(".menu-category").forEach((section) => {
+      let anyVisible = false;
+      section.querySelectorAll(".menu-item").forEach((item) => {
+        const matches = !q || item.dataset.name.includes(q);
+        item.style.display = matches ? "" : "none";
+        if (matches) anyVisible = true;
+      });
+      section.style.display = anyVisible ? "" : "none";
+    });
+  });
+
+  // ---------- STEP 3: cart panel rendering ----------
+  const cartFab = document.getElementById("cartFab");
+  const cartOverlay = document.getElementById("cartOverlay");
+  const cartItemsEl = document.getElementById("cartItems");
+  const cartTotalEl = document.getElementById("cartTotal");
+  const cartCountEl = document.getElementById("cartCount");
+
+  function renderCart() {
+    const entries = Object.entries(cart);
+    let total = 0;
+    let count = 0;
+
+    if (entries.length === 0) {
+      cartItemsEl.innerHTML = '<p class="cart-empty-msg">Your cart is empty. Add items from the menu to get started.</p>';
+    } else {
+      cartItemsEl.innerHTML = "";
+      entries.forEach(([id, data]) => {
+        total += data.price * data.qty;
+        count += data.qty;
+        const row = document.createElement("div");
+        row.className = "cart-row";
+        row.innerHTML = `
+          <span class="cart-row-name">${data.name} <br><small>R${data.price} each</small></span>
+          <div class="cart-row-controls">
+            <button class="cart-minus">−</button>
+            <span>${data.qty}</span>
+            <button class="cart-plus">+</button>
+          </div>
+          <span>R${data.price * data.qty}</span>
+        `;
+        row.querySelector(".cart-plus").addEventListener("click", () => {
+          cart[id].qty += 1;
+          renderCart();
+          syncItemCard(id);
+        });
+        row.querySelector(".cart-minus").addEventListener("click", () => {
+          cart[id].qty -= 1;
+          if (cart[id].qty <= 0) delete cart[id];
+          renderCart();
+          syncItemCard(id);
+        });
+        cartItemsEl.appendChild(row);
+      });
+    }
+
+    cartTotalEl.textContent = "R" + total;
+    cartCountEl.textContent = count;
+    cartFab.style.display = count > 0 ? "flex" : "none";
+  }
+
+  // keeps the little quantity stepper on the menu card in sync if changed from the cart panel
+  function syncItemCard(id) {
+    const item = document.querySelector(`.menu-item[data-item-id="${id}"]`);
+    if (!item) return;
+    const qty = cart[id] ? cart[id].qty : 0;
+    const addBtn = item.querySelector(".add-btn");
+    const qtyBox = item.querySelector(".item-qty");
+    qtyBox.querySelector(".qty-value").textContent = qty;
+    addBtn.style.display = qty > 0 ? "none" : "inline-block";
+    qtyBox.style.display = qty > 0 ? "flex" : "none";
+  }
+
+  cartFab.addEventListener("click", () => cartOverlay.classList.add("open"));
+  document.getElementById("closeCart").addEventListener("click", () => cartOverlay.classList.remove("open"));
+  cartOverlay.addEventListener("click", (e) => {
+    if (e.target === cartOverlay) cartOverlay.classList.remove("open");
+  });
+
+  // Placeholder checkout - order processing/vendor coordination to be added later
+  document.getElementById("checkoutBtn").addEventListener("click", () => {
+    alert("Checkout isn't connected yet — order processing with the vendor is still being finalised. Your cart has been kept for now.");
+  });
+})();
+</script>
+
+</body>
+</html>

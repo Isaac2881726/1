@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Page Not Found | Campus Eats</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --hunter: #1F3823;
+    --brick: #A8412C;
+    --parchment: #EFE9DA;
+    --gold: #C9A227;
+    --ink: #2B2418;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1, h2, .display {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    line-height: 1.05;
+  }
+
+  a { text-decoration: none; color: inherit; }
+  img, svg { display: block; }
+
+  /* ---------- NAV (shared with homepage/menu) ---------- */
+
+  .navbar {
+    background: var(--hunter);
+    padding: 16px 24px;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-badge {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .brand-badge svg { width: 26px; height: 26px; }
+
+  .wordmark {
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ---------- ERROR CONTENT ---------- */
+
+  .error-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+  }
+
+  .error-content {
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .error-badge {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: var(--hunter);
+    border: 6px double var(--gold);
+    outline: 1.5px solid var(--gold);
+    outline-offset: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 34px;
+    box-shadow: 0 18px 40px rgba(31, 56, 35, 0.25);
+  }
+
+  .error-code {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 46px;
+    color: var(--gold);
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    border: 1.5px solid var(--brick);
+    color: var(--brick);
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.6px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+
+  .error-title {
+    font-size: clamp(26px, 5vw, 36px);
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  }
+
+  .error-copy {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink);
+    opacity: 0.85;
+    max-width: 40ch;
+    margin-bottom: 34px;
+  }
+
+  .btn-cta {
+    background: var(--brick);
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    font-size: 14.5px;
+    padding: 16px 32px;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(168, 65, 44, 0.28);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-cta:hover,
+  .btn-cta:focus-visible {
+    background: #8f371f;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(168, 65, 44, 0.34);
+  }
+
+  .tagline {
+    font-style: italic;
+    font-size: 14px;
+    color: var(--hunter);
+    opacity: 0.85;
+    margin-top: 22px;
+  }
+
+  .tagline b { font-style: normal; color: var(--brick); }
+
+  @media (max-width: 480px) {
+    .error-badge { width: 110px; height: 110px; }
+    .error-code { font-size: 36px; }
+    .btn-cta { width: 100%; text-align: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="navbar">
+  <div class="nav-inner">
+    <a class="brand" href="campuseats-homepage (2).html">
+      <span class="brand-badge" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="14" r="6" fill="#FFFFFF"/>
+          <path d="M32 21 L27 34 L20 40" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M32 21 L38 32 L47 26" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M27 34 L23 50" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+          <path d="M32 34 L38 49" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+          <rect x="12" y="36" width="12" height="8" rx="1" fill="#FFFFFF"/>
+          <rect x="13.5" y="34" width="9" height="2" fill="#FFFFFF"/>
+          <path d="M43 22 a6 6 0 0 1 12 0 z" fill="#FFFFFF"/>
+          <rect x="41.5" y="22" width="15" height="2.4" rx="1.2" fill="#FFFFFF"/>
+          <rect x="47.5" y="15" width="2" height="4" fill="#FFFFFF"/>
+        </svg>
+      </span>
+      <span class="wordmark">Campus Eats</span>
+    </a>
+  </div>
+</header>
+
+<!-- ============ 404 CONTENT ============ -->
+<main class="error-wrapper">
+  <div class="error-content">
+    <span class="eyebrow">Wits University · Thuma Mina</span>
+    <div class="error-badge">
+      <span class="error-code">404</span>
+    </div>
+    <h1 class="error-title">This Plate Got Lost</h1>
+    <p class="error-copy">We couldn't find the page you were looking for. It might have been moved, renamed, or maybe it just never made it out of Tubatsi's kitchen.</p>
+    <a class="btn-cta" href="campuseats-homepage (2).html">Back to Campus Eats</a>
+    <p class="tagline"><b>"Thuma Mina"</b> — send me. We'll get you back on track.</p>
+  </div>
+</main>
+
+</body>
+</html>

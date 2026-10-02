@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — Campus Eats</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --hunter: #1F3823;
+    --brick: #A8412C;
+    --parchment: #EFE9DA;
+    --gold: #C9A227;
+    --ink: #2B2418;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1, h2, .display {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    line-height: 1.05;
+  }
+
+  .nav-label, .eyebrow, .section-heading {
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+  }
+
+  a { text-decoration: none; color: inherit; }
+  img, svg { display: block; }
+
+  /* ---------- NAV (shared with homepage/menu) ---------- */
+
+  .navbar {
+    background: var(--hunter);
+    padding: 16px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-badge {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .brand-badge svg { width: 26px; height: 26px; }
+
+  .wordmark {
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav-label {
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    opacity: 0.92;
+    transition: opacity 0.15s ease;
+    padding: 6px 2px;
+    border-bottom: 2px solid transparent;
+  }
+
+  .nav-label:hover,
+  .nav-label:focus-visible {
+    opacity: 1;
+    border-bottom-color: var(--gold);
+  }
+
+  .nav-label.active { border-bottom-color: var(--gold); opacity: 1; }
+
+  .nav-links .btn-signin {
+    background: var(--brick);
+    color: var(--white);
+    padding: 9px 18px;
+    border-radius: 8px;
+    border-bottom: none;
+  }
+
+  .nav-links .btn-signin:hover { background: #8f371f; }
+
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--white);
+    border-radius: 6px;
+    width: 40px;
+    height: 36px;
+    color: var(--white);
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  /* ---------- AUTH LAYOUT ---------- */
+
+  .auth-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 20px;
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 440px;
+    background: var(--white);
+    border: 1px solid rgba(43, 36, 24, 0.12);
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(43, 36, 24, 0.10);
+    padding: 36px 32px 32px;
+  }
+
+  .auth-eyebrow {
+    display: inline-block;
+    border: 1.5px solid var(--brick);
+    color: var(--brick);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+
+  .auth-title {
+    font-size: 28px;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .auth-subtext {
+    font-size: 14px;
+    color: var(--ink);
+    opacity: 0.75;
+    line-height: 1.5;
+    margin-bottom: 26px;
+  }
+
+  .form-group {
+    margin-bottom: 18px;
+  }
+
+  .form-label {
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--hunter);
+    margin-bottom: 7px;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1.5px solid rgba(43, 36, 24, 0.2);
+    border-radius: 9px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--parchment);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--brick);
+    box-shadow: 0 0 0 3px rgba(168, 65, 44, 0.14);
+  }
+
+  .form-input.input-error {
+    border-color: var(--brick);
+    box-shadow: 0 0 0 3px rgba(168, 65, 44, 0.14);
+  }
+
+  .field-hint {
+    font-size: 12.5px;
+    color: var(--ink);
+    opacity: 0.6;
+    margin-top: 6px;
+  }
+
+  .field-error {
+    font-size: 12.5px;
+    color: var(--brick);
+    font-weight: 600;
+    margin-top: 6px;
+    display: none;
+  }
+
+  .field-error.visible { display: block; }
+
+  .form-alert {
+    background: rgba(168, 65, 44, 0.1);
+    border: 1.5px solid var(--brick);
+    color: var(--brick);
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 12px 14px;
+    border-radius: 9px;
+    margin-bottom: 20px;
+    display: none;
+  }
+
+  .form-alert.visible { display: block; }
+
+  .form-success {
+    background: rgba(31, 56, 35, 0.08);
+    border: 1.5px solid var(--hunter);
+    color: var(--hunter);
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 12px 14px;
+    border-radius: 9px;
+    margin-bottom: 20px;
+    display: none;
+  }
+
+  .form-success.visible { display: block; }
+
+  .btn-cta {
+    width: 100%;
+    background: var(--brick);
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    font-size: 14.5px;
+    padding: 15px 24px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(168, 65, 44, 0.28);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    margin-top: 4px;
+  }
+
+  .btn-cta:hover,
+  .btn-cta:focus-visible {
+    background: #8f371f;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(168, 65, 44, 0.34);
+  }
+
+  .auth-switch {
+    text-align: center;
+    font-size: 13.5px;
+    color: var(--ink);
+    opacity: 0.85;
+    margin-top: 22px;
+  }
+
+  .auth-switch a {
+    color: var(--brick);
+    font-weight: 600;
+  }
+
+  .auth-switch a:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
+    .auth-card { padding: 28px 22px 26px; }
+    .auth-title { font-size: 24px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="navbar">
+  <div class="nav-inner">
+    <a class="brand" href="campuseats-homepage (2).html" style="align-items:center;">
+      <span class="brand-badge" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="14" r="6" fill="#FFFFFF"/>
+          <path d="M32 21 L27 34 L20 40" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M32 21 L38 32 L47 26" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M27 34 L23 50" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+          <path d="M32 34 L38 49" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+          <rect x="12" y="36" width="12" height="8" rx="1" fill="#FFFFFF"/>
+          <rect x="13.5" y="34" width="9" height="2" fill="#FFFFFF"/>
+          <path d="M43 22 a6 6 0 0 1 12 0 z" fill="#FFFFFF"/>
+          <rect x="41.5" y="22" width="15" height="2.4" rx="1.2" fill="#FFFFFF"/>
+          <rect x="47.5" y="15" width="2" height="4" fill="#FFFFFF"/>
+        </svg>
+      </span>
+      <span class="wordmark">Campus Eats</span>
+    </a>
+
+    <button class="nav-toggle" aria-label="Open menu">☰</button>
+
+    <nav class="nav-links">
+      <a class="nav-label" href="campuseats-menu.html">Menu</a>
+      <a class="nav-label" href="#track">Track Order</a>
+      <a class="nav-label btn-signin" href="login.html">Sign In</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ REGISTER FORM ============ -->
+<main class="auth-wrapper">
+  <div class="auth-card">
+    <span class="auth-eyebrow">Wits University · Thuma Mina</span>
+    <h1 class="auth-title">Create Account</h1>
+    <p class="auth-subtext">Sign up with your phone number to start ordering from Tubatsi Grill House — cash or bank transfer, no card needed.</p>
+
+    <div class="form-alert" id="formAlert"></div>
+    <div class="form-success" id="formSuccess"></div>
+
+    <form id="registerForm" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="fullName">Full Name</label>
+        <input class="form-input" type="text" id="fullName" name="fullName" placeholder="e.g. Thabiso Mokoena" autocomplete="name" required>
+        <div class="field-error" id="fullNameError">Please enter your full name.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="phone">Phone Number</label>
+        <input class="form-input" type="tel" id="phone" name="phone" placeholder="e.g. 0721234567" autocomplete="tel" required>
+        <div class="field-hint">This will be your username. Format: 10 digits, e.g. 0721234567.</div>
+        <div class="field-error" id="phoneError">Enter a valid 10-digit phone number.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <input class="form-input" type="password" id="password" name="password" placeholder="At least 6 characters" autocomplete="new-password" required>
+        <div class="field-error" id="passwordError">Password must be at least 6 characters.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="confirmPassword">Confirm Password</label>
+        <input class="form-input" type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" autocomplete="new-password" required>
+        <div class="field-error" id="confirmPasswordError">Passwords do not match.</div>
+      </div>
+
+      <button type="submit" class="btn-cta">Register</button>
+    </form>
+
+    <p class="auth-switch">Already have an account? <a href="login.html">Sign in</a></p>
+  </div>
+</main>
+
+<!-- ============ MOCK AUTH SCRIPT (placeholder — replace with real backend) ============ -->
+<script>
+  (function () {
+    var form = document.getElementById('registerForm');
+    var fullNameInput = document.getElementById('fullName');
+    var phoneInput = document.getElementById('phone');
+    var passwordInput = document.getElementById('password');
+    var confirmPasswordInput = document.getElementById('confirmPassword');
+
+    var fullNameError = document.getElementById('fullNameError');
+    var phoneError = document.getElementById('phoneError');
+    var passwordError = document.getElementById('passwordError');
+    var confirmPasswordError = document.getElementById('confirmPasswordError');
+
+    var formAlert = document.getElementById('formAlert');
+    var formSuccess = document.getElementById('formSuccess');
+
+    // South African-friendly phone format: 10 digits, starting with 0
+    // (accepts spaces/dashes, then normalizes to digits only)
+    var PHONE_REGEX = /^0\d{9}$/;
+
+    function clearErrors() {
+      [fullNameInput, phoneInput, passwordInput, confirmPasswordInput].forEach(function (el) {
+        el.classList.remove('input-error');
+      });
+      [fullNameError, phoneError, passwordError, confirmPasswordError].forEach(function (el) {
+        el.classList.remove('visible');
+      });
+      formAlert.classList.remove('visible');
+      formSuccess.classList.remove('visible');
+    }
+
+    function showFieldError(input, errorEl) {
+      input.classList.add('input-error');
+      errorEl.classList.add('visible');
+    }
+
+    function normalizePhone(raw) {
+      return raw.replace(/[\s-]/g, '');
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      clearErrors();
+
+      var fullName = fullNameInput.value.trim();
+      var phone = normalizePhone(phoneInput.value.trim());
+      var password = passwordInput.value;
+      var confirmPassword = confirmPasswordInput.value;
+
+      var isValid = true;
+
+      if (fullName.length < 2) {
+        showFieldError(fullNameInput, fullNameError);
+        isValid = false;
+      }
+
+      if (!PHONE_REGEX.test(phone)) {
+        showFieldError(phoneInput, phoneError);
+        isValid = false;
+      }
+
+      if (password.length < 6) {
+        showFieldError(passwordInput, passwordError);
+        isValid = false;
+      }
+
+      if (password !== confirmPassword || confirmPassword.length === 0) {
+        showFieldError(confirmPasswordInput, confirmPasswordError);
+        isValid = false;
+      }
+
+      if (!isValid) {
+        formAlert.textContent = 'Please fix the highlighted fields.';
+        formAlert.classList.add('visible');
+        return;
+      }
+
+      // ---- MOCK LOCALSTORAGE AUTH (placeholder until backend integration) ----
+      var existingUsersRaw = localStorage.getItem('campusEatsUsers');
+      var existingUsers = existingUsersRaw ? JSON.parse(existingUsersRaw) : {};
+
+      if (existingUsers[phone]) {
+        formAlert.textContent = 'An account with this phone number already exists.';
+        formAlert.classList.add('visible');
+        return;
+      }
+
+      existingUsers[phone] = {
+        fullName: fullName,
+        phone: phone,
+        password: password // NOTE: plaintext mock only — real backend must hash passwords
+      };
+
+      localStorage.setItem('campusEatsUsers', JSON.stringify(existingUsers));
+      localStorage.setItem('campusEatsCurrentUser', JSON.stringify({ fullName: fullName, phone: phone }));
+
+      formSuccess.textContent = 'Account created! Redirecting you home...';
+      formSuccess.classList.add('visible');
+
+      setTimeout(function () {
+        window.location.href = 'campuseats-homepage (2).html';
+      }, 1200);
+    });
+  })();
+</script>
+
+</body>
+</html>

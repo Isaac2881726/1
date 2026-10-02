@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Sign In — Campus Eats</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --hunter: #1F3823;
+    --brick: #A8412C;
+    --parchment: #EFE9DA;
+    --gold: #C9A227;
+    --ink: #2B2418;
+    --white: #FFFFFF;
+    --error: #A8412C;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--hunter);
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(201, 162, 39, 0.08), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(201, 162, 39, 0.06), transparent 45%);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .login-shell {
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+
+  .brand-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .brand-badge svg { width: 24px; height: 24px; }
+
+  .wordmark {
+    color: var(--parchment);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .wordmark small {
+    display: block;
+    font-family: 'Work Sans', sans-serif;
+    text-transform: none;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    color: var(--gold);
+    margin-top: 2px;
+  }
+
+  .card {
+    background: var(--parchment);
+    border-radius: 16px;
+    padding: 36px 32px 32px;
+    border: 1px solid rgba(201, 162, 39, 0.4);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  }
+
+  .card h1 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 0.3px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .card p.sub {
+    font-size: 14px;
+    color: var(--ink);
+    opacity: 0.68;
+    margin-bottom: 26px;
+    line-height: 1.5;
+  }
+
+  label {
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    color: var(--hunter);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .passcode-input {
+    width: 100%;
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    letter-spacing: 6px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(43, 36, 24, 0.22);
+    background: var(--white);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .passcode-input:focus {
+    border-color: var(--brick);
+    box-shadow: 0 0 0 3px rgba(168, 65, 44, 0.15);
+  }
+
+  .passcode-input.shake {
+    animation: shake 0.4s ease;
+    border-color: var(--error);
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(7px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(3px); }
+  }
+
+  .error-msg {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--error);
+    font-weight: 500;
+  }
+
+  .error-msg.visible { display: flex; }
+
+  .btn-submit {
+    width: 100%;
+    margin-top: 22px;
+    background: var(--brick);
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    font-size: 14.5px;
+    text-transform: uppercase;
+    padding: 15px 0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(168, 65, 44, 0.28);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+
+  .btn-submit:hover {
+    background: #8f371f;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(168, 65, 44, 0.34);
+  }
+
+  .btn-submit:active { transform: translateY(0); }
+
+  .footnote {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 12px;
+    color: var(--parchment);
+    opacity: 0.6;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="login-shell">
+    <div class="brand-row">
+      <span class="brand-badge" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="14" r="6" fill="#C9A227"/>
+          <path d="M32 21 L27 34 L20 40" stroke="#C9A227" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M32 21 L38 32 L47 26" stroke="#C9A227" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M27 34 L23 50" stroke="#C9A227" stroke-width="4" stroke-linecap="round"/>
+          <path d="M32 34 L38 49" stroke="#C9A227" stroke-width="4" stroke-linecap="round"/>
+          <rect x="12" y="36" width="12" height="8" rx="1" fill="#C9A227"/>
+          <rect x="13.5" y="34" width="9" height="2" fill="#C9A227"/>
+          <path d="M43 22 a6 6 0 0 1 12 0 z" fill="#C9A227"/>
+          <rect x="41.5" y="22" width="15" height="2.4" rx="1.2" fill="#C9A227"/>
+          <rect x="47.5" y="15" width="2" height="4" fill="#C9A227"/>
+        </svg>
+      </span>
+      <span class="wordmark">Campus Eats<small>Staff Portal</small></span>
+    </div>
+
+    <div class="card">
+      <h1>Sign in to run the floor</h1>
+      <p class="sub">Enter the shift passcode to open the order dashboard.</p>
+
+      <form id="login-form" novalidate>
+        <label for="passcode">Passcode</label>
+        <input
+          id="passcode"
+          class="passcode-input"
+          type="password"
+          inputmode="text"
+          autocomplete="off"
+          placeholder="••••••••••••"
+          autofocus
+        >
+        <div class="error-msg" id="error-msg">Wrong passcode. Ask your shift lead if you're not sure.</div>
+        <button class="btn-submit" type="submit">Enter Dashboard</button>
+      </form>
+    </div>
+
+    <p class="footnote">Tubatsi Grill House · Wits Campus</p>
+  </div>
+
+<script>
+  // Mock passcode validation. In production this would call an authenticated
+  // endpoint rather than checking a client-side string.
+  const VALID_PASSCODE = "comrades_2026";
+
+  const form = document.getElementById('login-form');
+  const input = document.getElementById('passcode');
+  const errorMsg = document.getElementById('error-msg');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const entered = input.value.trim();
+
+    if (entered === VALID_PASSCODE) {
+      sessionStorage.setItem('campuseats_staff_authed', 'true');
+      window.location.href = 'staff-dashboard.html';
+    } else {
+      errorMsg.classList.add('visible');
+      input.classList.add('shake');
+      input.value = '';
+      input.focus();
+      setTimeout(() => input.classList.remove('shake'), 400);
+    }
+  });
+
+  input.addEventListener('input', function () {
+    errorMsg.classList.remove('visible');
+  });
+</script>
+
+</body>
+</html>

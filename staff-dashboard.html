@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Dashboard — Campus Eats Staff</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --hunter: #1F3823;
+    --brick: #A8412C;
+    --parchment: #EFE9DA;
+    --gold: #C9A227;
+    --ink: #2B2418;
+    --white: #FFFFFF;
+    --card-bg: #FFFFFF;
+    --column-bg: rgba(43, 36, 24, 0.035);
+    --danger: #A8412C;
+    --ok: #3E6B44;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ---------- TOP BAR ---------- */
+
+  .topbar {
+    background: var(--hunter);
+    border-bottom: 3px solid var(--gold);
+    padding: 14px 22px;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+  }
+
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-badge {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .brand-badge svg { width: 20px; height: 20px; }
+
+  .brand-text {
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  .brand-text small {
+    display: block;
+    font-family: 'Work Sans', sans-serif;
+    text-transform: none;
+    font-weight: 500;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.3px;
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .live-clock {
+    color: var(--parchment);
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    opacity: 0.85;
+  }
+
+  .sound-toggle {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--parchment);
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .sound-toggle[data-on="true"] { border-color: var(--gold); color: var(--gold); }
+
+  .btn-signout {
+    background: var(--brick);
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 9px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-signout:hover { background: #8f371f; }
+
+  /* ---------- BOARD ---------- */
+
+  .board-header {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 20px 22px 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .board-header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 21px;
+    letter-spacing: 0.3px;
+  }
+
+  .board-header .count-summary {
+    font-size: 13px;
+    color: var(--ink);
+    opacity: 0.65;
+  }
+
+  .board {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 16px 22px 40px;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 300px;
+    gap: 16px;
+    overflow-x: auto;
+    align-items: start;
+  }
+
+  .column {
+    background: var(--column-bg);
+    border: 1px solid rgba(43, 36, 24, 0.1);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 150px);
+    min-height: 200px;
+  }
+
+  .column-head {
+    padding: 14px 14px 12px;
+    border-bottom: 2px solid rgba(43, 36, 24, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .column-head .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+  .column-title {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 13.5px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+  }
+
+  .column-count {
+    background: var(--white);
+    border: 1px solid rgba(43, 36, 24, 0.15);
+    border-radius: 999px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 9px;
+    min-width: 22px;
+    text-align: center;
+  }
+
+  .column-body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+  }
+
+  .column-empty {
+    font-size: 12.5px;
+    color: var(--ink);
+    opacity: 0.4;
+    text-align: center;
+    padding: 18px 8px;
+    font-style: italic;
+  }
+
+  /* column dot colors */
+  .col-new .dot { background: var(--brick); }
+  .col-accepted .dot { background: var(--gold); }
+  .col-processing .dot { background: #7A6A2E; }
+  .col-ready .dot { background: var(--hunter); }
+  .col-delivering .dot { background: #3E6B44; }
+  .col-completed .dot { background: #4A5A4C; opacity: 0.7; }
+  .col-cancelled .dot { background: var(--ink); opacity: 0.4; }
+
+  /* ---------- ORDER CARD ---------- */
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid rgba(43, 36, 24, 0.12);
+    border-radius: 12px;
+    padding: 13px 14px 14px;
+    box-shadow: 0 2px 6px rgba(43, 36, 24, 0.05);
+  }
+
+  .card.is-urgent {
+    border-color: var(--brick);
+    box-shadow: 0 0 0 2px rgba(168, 65, 44, 0.18);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .order-id {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+  }
+
+  .order-total {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--brick);
+    white-space: nowrap;
+  }
+
+  .timer-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--brick);
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+
+  .timer-pill svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+  .timer-pill.timer-warn {
+    background: #c0392b;
+    animation: pulse 1s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.65; }
+  }
+
+  .customer-line {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .customer-phone {
+    font-size: 12px;
+    color: var(--ink);
+    opacity: 0.65;
+    margin-bottom: 9px;
+  }
+
+  .items-list {
+    font-size: 12.5px;
+    line-height: 1.55;
+    margin-bottom: 9px;
+    padding-left: 2px;
+  }
+
+  .items-list .item-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .items-list .item-qty {
+    color: var(--ink);
+    opacity: 0.55;
+    flex-shrink: 0;
+  }
+
+  .meta-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  .meta-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0.45;
+    flex-shrink: 0;
+    width: 62px;
+  }
+
+  .meta-value { color: var(--ink); opacity: 0.85; }
+
+  .payment-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+
+  .payment-tag.cash { background: rgba(62, 107, 68, 0.14); color: var(--ok); }
+  .payment-tag.transfer { background: rgba(201, 162, 39, 0.18); color: #7A6A2E; }
+
+  .note-box {
+    background: rgba(201, 162, 39, 0.12);
+    border-left: 3px solid var(--gold);
+    padding: 6px 9px;
+    font-size: 11.5px;
+    line-height: 1.4;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 10px;
+  }
+
+  .photo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    color: var(--hunter);
+    font-weight: 600;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed var(--hunter);
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .btn-action {
+    flex: 1 1 auto;
+    font-family: 'Oswald', sans-serif;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    padding: 9px 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: filter 0.12s ease;
+  }
+
+  .btn-action:hover { filter: brightness(0.93); }
+
+  .btn-primary { background: var(--hunter); color: var(--white); }
+  .btn-danger { background: transparent; color: var(--brick); border: 1.5px solid var(--brick); }
+  .btn-danger:hover { background: rgba(168, 65, 44, 0.08); }
+
+  .status-note {
+    font-size: 11.5px;
+    color: var(--ink);
+    opacity: 0.5;
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  .cancel-reason {
+    font-size: 11.5px;
+    color: var(--brick);
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+
+  @media (max-width: 700px) {
+    .board {
+      grid-auto-flow: row;
+      grid-auto-columns: unset;
+      grid-template-columns: 1fr;
+    }
+    .column { max-height: none; }
+    .column-body { max-height: 420px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-badge" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="14" r="6" fill="#FFFFFF"/>
+          <path d="M32 21 L27 34 L20 40" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M32 21 L38 32 L47 26" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M27 34 L23 50" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+          <path d="M32 34 L38 49" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+          <rect x="12" y="36" width="12" height="8" rx="1" fill="#FFFFFF"/>
+          <rect x="13.5" y="34" width="9" height="2" fill="#FFFFFF"/>
+          <path d="M43 22 a6 6 0 0 1 12 0 z" fill="#FFFFFF"/>
+          <rect x="41.5" y="22" width="15" height="2.4" rx="1.2" fill="#FFFFFF"/>
+          <rect x="47.5" y="15" width="2" height="4" fill="#FFFFFF"/>
+        </svg>
+      </span>
+      <span class="brand-text">Campus Eats<small>Staff Portal — Tubatsi Grill House</small></span>
+    </div>
+    <div class="topbar-right">
+      <span class="live-clock" id="live-clock">--:--:--</span>
+      <button class="sound-toggle" id="sound-toggle" data-on="true" aria-pressed="true">🔔 Alerts On</button>
+      <button class="btn-signout" id="signout-btn">Sign Out</button>
+    </div>
+  </div>
+</header>
+
+<div class="board-header">
+  <h1>Order Dashboard</h1>
+  <span class="count-summary" id="count-summary"></span>
+</div>
+
+<main class="board" id="board">
+  <!-- Columns are rendered by JS -->
+</main>
+
+<script>
+  /* =====================================================
+     CONFIG
+     ===================================================== */
+  const NEW_ORDER_WINDOW_SECONDS = 5 * 60; // 5-minute accept window
+  const WARN_THRESHOLD_SECONDS = 60;       // last 60s pulses red
+
+  const COLUMNS = [
+    { key: 'new',        label: 'New Orders',  cls: 'col-new' },
+    { key: 'accepted',   label: 'Accepted',     cls: 'col-accepted' },
+    { key: 'processing', label: 'Processing',   cls: 'col-processing' },
+    { key: 'ready',      label: 'Ready',        cls: 'col-ready' },
+    { key: 'delivering', label: 'Delivering',   cls: 'col-delivering' },
+    { key: 'completed',  label: 'Completed',    cls: 'col-completed' },
+    { key: 'cancelled',  label: 'Cancelled',    cls: 'col-cancelled' },
+  ];
+
+  /* =====================================================
+     MOCK DATA
+     ===================================================== */
+  const now = Date.now();
+
+  function minutesAgo(m) { return now - m * 60 * 1000; }
+  function secondsAgo(s) { return now - s * 1000; }
+
+  let orders = [
+    {
+      id: 'CE-1042',
+      customerName: 'Lindiwe M.',
+      phone: '071 234 5678',
+      items: [{ name: 'Big Boss Burger', qty: 1 }, { name: 'Mega Kota', qty: 2 }],
+      total: 190,
+      paymentMethod: 'cash',
+      building: "Men's Res — David Webster",
+      note: 'No onions please, ring the buzzer twice.',
+      photoLink: '#',
+      state: 'new',
+      createdAt: secondsAgo(20),
+    },
+    {
+      id: 'CE-1043',
+      customerName: 'Sipho K.',
+      phone: '082 555 1190',
+      items: [{ name: 'Braai Box', qty: 1 }],
+      total: 85,
+      paymentMethod: 'transfer',
+      building: 'Jubilee Hall',
+      note: '',
+      photoLink: '#',
+      state: 'new',
+      createdAt: secondsAgo(255),
+    },
+    {
+      id: 'CE-1039',
+      customerName: 'Amahle N.',
+      phone: '083 019 4477',
+      items: [{ name: 'Sunshine Breakfast', qty: 2 }, { name: 'Mega Kota', qty: 1 }],
+      total: 140,
+      paymentMethod: 'cash',
+      building: 'Barnato Hall',
+      note: 'Leave with res porter if I don\'t answer.',
+      photoLink: '#',
+      state: 'accepted',
+      createdAt: minutesAgo(6),
+    },
+    {
+      id: 'CE-1037',
+      customerName: 'Thabo R.',
+      phone: '076 882 3345',
+      items: [{ name: 'Big Boss Burger', qty: 2 }],
+      total: 180,
+      paymentMethod: 'transfer',
+      building: 'Reith Hall',
+      note: '',
+      photoLink: '#',
+      state: 'processing',
+      createdAt: minutesAgo(11),
+    },
+    {
+      id: 'CE-1035',
+      customerName: 'Nomvula P.',
+      phone: '079 231 7761',
+      items: [{ name: 'Mega Kota', qty: 3 }],
+      total: 150,
+      paymentMethod: 'cash',
+      building: 'Ernest Oppenheimer Hall',
+      note: 'Extra chips on the side if possible.',
+      photoLink: '#',
+      state: 'ready',
+      createdAt: minutesAgo(16),
+    },
+    {
+      id: 'CE-1031',
+      customerName: 'Katlego S.',
+      phone: '071 004 9982',
+      items: [{ name: 'Braai Box', qty: 1 }, { name: 'Sunshine Breakfast', qty: 1 }],
+      total: 130,
+      paymentMethod: 'transfer',
+      building: 'College House',
+      note: '',
+      photoLink: '#',
+      state: 'delivering',
+      createdAt: minutesAgo(24),
+    },
+    {
+      id: 'CE-1022',
+      customerName: 'Refilwe D.',
+      phone: '084 667 2201',
+      items: [{ name: 'Big Boss Burger', qty: 1 }, { name: 'Mega Kota', qty: 1 }],
+      total: 140,
+      paymentMethod: 'cash',
+      building: "Men's Res — David Webster",
+      note: '',
+      photoLink: '#',
+      state: 'completed',
+      createdAt: minutesAgo(52),
+    },
+    {
+      id: 'CE-1018',
+      customerName: 'Bongani T.',
+      phone: '078 340 5567',
+      items: [{ name: 'Sunshine Breakfast', qty: 1 }],
+      total: 45,
+      paymentMethod: 'cash',
+      building: 'Jubilee Hall',
+      note: '',
+      photoLink: '#',
+      state: 'cancelled',
+      cancelReason: 'Missed the 5-minute accept window',
+      createdAt: minutesAgo(70),
+    },
+  ];
+
+  let nextOrderNumber = 1044;
+  let soundOn = true;
+
+  /* =====================================================
+     STATE MACHINE
+     ===================================================== */
+  const TRANSITIONS = {
+    new:        { accept: 'accepted', cancel: 'cancelled' },
+    accepted:   { place: 'processing', cancel: 'cancelled' },
+    processing: { ready: 'ready' },
+    ready:      { deliver: 'delivering' },
+    delivering: { deliver_done: 'completed' },
+  };
+
+  const ACTION_LABELS = {
+    accept: 'Accept Order',
+    cancel: 'Cancel Order',
+    place: 'Mark Placed',
+    ready: 'Mark Ready',
+    deliver: 'Start Delivery',
+    deliver_done: 'Mark Delivered',
+  };
+
+  function actionsFor(state) {
+    const map = TRANSITIONS[state];
+    if (!map) return [];
+    return Object.keys(map).map((action) => ({
+      action,
+      label: ACTION_LABELS[action],
+      danger: action === 'cancel',
+    }));
+  }
+
+  function applyAction(orderId, action) {
+    const order = orders.find((o) => o.id === orderId);
+    if (!order) return;
+    const map = TRANSITIONS[order.state];
+    if (!map || !map[action]) return;
+    order.state = map[action];
+    if (action === 'cancel') {
+      order.cancelReason = 'Cancelled by staff';
+    }
+    render();
+  }
+
+  function autoCancelExpired() {
+    const nowTs = Date.now();
+    let changed = false;
+    orders.forEach((order) => {
+      if (order.state === 'new') {
+        const elapsed = (nowTs - order.createdAt) / 1000;
+        if (elapsed >= NEW_ORDER_WINDOW_SECONDS) {
+          order.state = 'cancelled';
+          order.cancelReason = 'Missed the 5-minute accept window';
+          changed = true;
+        }
+      }
+    });
+    if (changed) render();
+  }
+
+  /* =====================================================
+     RENDER HELPERS
+     ===================================================== */
+  const clockIcon = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+    <path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>`;
+
+  function formatMoney(n) { return 'R' + n; }
+
+  function formatMMSS(totalSeconds) {
+    const s = Math.max(0, Math.ceil(totalSeconds));
+    const m = Math.floor(s / 60);
+    const r = s % 60;
+    return m + ':' + String(r).padStart(2, '0');
+  }
+
+  function paymentTagHtml(method) {
+    if (method === 'cash') return '<span class="payment-tag cash">Cash on delivery</span>';
+    return '<span class="payment-tag transfer">Bank transfer</span>';
+  }
+
+  function itemsListHtml(items) {
+    return items
+      .map(
+        (it) =>
+          `<div class="item-row"><span>${it.name}</span><span class="item-qty">×${it.qty}</span></div>`
+      )
+      .join('');
+  }
+
+  function cardHtml(order) {
+    const isNew = order.state === 'new';
+    let timerHtml = '';
+    let urgentClass = '';
+
+    if (isNew) {
+      const elapsed = (Date.now() - order.createdAt) / 1000;
+      const remaining = NEW_ORDER_WINDOW_SECONDS - elapsed;
+      const warn = remaining <= WARN_THRESHOLD_SECONDS;
+      if (warn) urgentClass = ' is-urgent';
+      timerHtml = `<div class="timer-pill${warn ? ' timer-warn' : ''}" data-timer-for="${order.id}">
+        ${clockIcon}<span data-timer-text>${formatMMSS(remaining)}</span> left to accept
+      </div>`;
+    }
+
+    const actions = actionsFor(order.state);
+    const actionsHtml = actions.length
+      ? `<div class="card-actions">${actions
+          .map(
+            (a) =>
+              `<button class="btn-action ${a.danger ? 'btn-danger' : 'btn-primary'}" data-order="${order.id}" data-action="${a.action}">${a.label}</button>`
+          )
+          .join('')}</div>`
+      : '';
+
+    let footerHtml = '';
+    if (order.state === 'completed') {
+      footerHtml = '<div class="status-note">Delivered — order closed.</div>';
+    } else if (order.state === 'cancelled') {
+      footerHtml = `<div class="cancel-reason">${order.cancelReason || 'Cancelled'}</div>`;
+    }
+
+    return `
+      <article class="card${urgentClass}" id="card-${order.id}">
+        ${timerHtml}
+        <div class="card-top">
+          <span class="order-id">${order.id}</span>
+          <span class="order-total">${formatMoney(order.total)}</span>
+        </div>
+        <div class="customer-line">${order.customerName}</div>
+        <div class="customer-phone">${order.phone}</div>
+        <div class="items-list">${itemsListHtml(order.items)}</div>
+        <div class="meta-grid">
+          <div class="meta-row"><span class="meta-label">Payment</span><span class="meta-value">${paymentTagHtml(order.paymentMethod)}</span></div>
+          <div class="meta-row"><span class="meta-label">Building</span><span class="meta-value">${order.building}</span></div>
+        </div>
+        ${order.note ? `<div class="note-box">${order.note}</div>` : ''}
+        <a class="photo-link" href="${order.photoLink}" target="_blank" rel="noopener">📷 View delivery photo</a>
+        ${actionsHtml}
+        ${footerHtml}
+      </article>
+    `;
+  }
+
+  function columnHtml(col) {
+    const colOrders = orders
+      .filter((o) => o.state === col.key)
+      .sort((a, b) => a.createdAt - b.createdAt);
+
+    const body = colOrders.length
+      ? colOrders.map(cardHtml).join('')
+      : `<div class="column-empty">No orders here right now</div>`;
+
+    return `
+      <section class="column ${col.cls}">
+        <div class="column-head">
+          <span class="column-title"><span class="dot"></span>${col.label}</span>
+          <span class="column-count">${colOrders.length}</span>
+        </div>
+        <div class="column-body">${body}</div>
+      </section>
+    `;
+  }
+
+  function render() {
+    const board = document.getElementById('board');
+    board.innerHTML = COLUMNS.map(columnHtml).join('');
+
+    const active = orders.filter((o) => o.state !== 'completed' && o.state !== 'cancelled').length;
+    document.getElementById('count-summary').textContent = `${active} active order${active === 1 ? '' : 's'}`;
+
+    board.querySelectorAll('[data-action]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        applyAction(btn.getAttribute('data-order'), btn.getAttribute('data-action'));
+      });
+    });
+  }
+
+  /* =====================================================
+     TIMER TICK — updates countdown text without a full
+     re-render, then triggers a full render on expiry
+     ===================================================== */
+  function tick() {
+    let anyExpired = false;
+    orders.forEach((order) => {
+      if (order.state !== 'new') return;
+      const elapsed = (Date.now() - order.createdAt) / 1000;
+      const remaining = NEW_ORDER_WINDOW_SECONDS - elapsed;
+      if (remaining <= 0) {
+        anyExpired = true;
+        return;
+      }
+      const el = document.querySelector(`[data-timer-for="${order.id}"] [data-timer-text]`);
+      if (el) el.textContent = formatMMSS(remaining);
+      const pill = document.querySelector(`[data-timer-for="${order.id}"]`);
+      if (pill && remaining <= WARN_THRESHOLD_SECONDS) {
+        pill.classList.add('timer-warn');
+        document.getElementById(`card-${order.id}`)?.classList.add('is-urgent');
+      }
+    });
+    if (anyExpired) {
+      autoCancelExpired();
+    }
+    document.getElementById('live-clock').textContent = new Date().toLocaleTimeString('en-ZA', { hour12: false });
+  }
+
+  /* =====================================================
+     MOCK: occasionally drop in a brand-new order so the
+     "New Orders" column feels live during a demo
+     ===================================================== */
+  const MOCK_ITEM_POOL = [
+    { name: 'Big Boss Burger', price: 90 },
+    { name: 'Mega Kota', price: 50 },
+    { name: 'Braai Box', price: 85 },
+    { name: 'Sunshine Breakfast', price: 45 },
+  ];
+  const MOCK_NAMES = ['Zanele B.', 'Karabo M.', 'Given F.', 'Palesa T.', 'Mpho L.'];
+  const MOCK_BUILDINGS = ["Men's Res — David Webster", 'Jubilee Hall', 'Barnato Hall', 'Reith Hall', 'College House'];
+
+  function spawnMockOrder() {
+    const itemCount = 1 + Math.floor(Math.random() * 2);
+    const items = [];
+    let total = 0;
+    for (let i = 0; i < itemCount; i++) {
+      const pick = MOCK_ITEM_POOL[Math.floor(Math.random() * MOCK_ITEM_POOL.length)];
+      const qty = 1 + Math.floor(Math.random() * 2);
+      items.push({ name: pick.name, qty });
+      total += pick.price * qty;
+    }
+    const order = {
+      id: 'CE-' + nextOrderNumber++,
+      customerName: MOCK_NAMES[Math.floor(Math.random() * MOCK_NAMES.length)],
+      phone: '0' + Math.floor(60 + Math.random() * 30) + ' ' + Math.floor(100 + Math.random() * 900) + ' ' + Math.floor(1000 + Math.random() * 9000),
+      items,
+      total,
+      paymentMethod: Math.random() > 0.5 ? 'cash' : 'transfer',
+      building: MOCK_BUILDINGS[Math.floor(Math.random() * MOCK_BUILDINGS.length)],
+      note: '',
+      photoLink: '#',
+      state: 'new',
+      createdAt: Date.now(),
+    };
+    orders.push(order);
+    render();
+  }
+
+  /* =====================================================
+     INIT
+     ===================================================== */
+  document.getElementById('signout-btn').addEventListener('click', () => {
+    sessionStorage.removeItem('campuseats_staff_authed');
+    window.location.href = 'staff-login.html';
+  });
+
+  document.getElementById('sound-toggle').addEventListener('click', function () {
+    soundOn = !soundOn;
+    this.dataset.on = String(soundOn);
+    this.setAttribute('aria-pressed', String(soundOn));
+    this.textContent = soundOn ? '🔔 Alerts On' : '🔕 Alerts Off';
+  });
+
+  render();
+  setInterval(tick, 1000);
+  // Demo-only: simulate a new order arriving periodically.
+  setInterval(spawnMockOrder, 45000);
+</script>
+
+</body>
+</html>

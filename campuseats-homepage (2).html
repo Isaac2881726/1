@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Eats — Thuma Mina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --hunter: #1F3823;
+    --brick: #A8412C;
+    --parchment: #EFE9DA;
+    --gold: #C9A227;
+    --ink: #2B2418;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, .display {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    line-height: 1.05;
+  }
+
+  .nav-label, .eyebrow, .badge-label, .badge-sub, .section-heading {
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  img, svg { display: block; }
+
+  /* ---------- NAV ---------- */
+
+  .navbar {
+    background: var(--hunter);
+    padding: 16px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-badge {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .brand-badge svg { width: 26px; height: 26px; }
+
+  .wordmark {
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav-label {
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    opacity: 0.92;
+    transition: opacity 0.15s ease;
+    padding: 6px 2px;
+    border-bottom: 2px solid transparent;
+  }
+
+  .nav-label:hover,
+  .nav-label:focus-visible {
+    opacity: 1;
+    border-bottom-color: var(--gold);
+  }
+
+  .nav-links .btn-signin {
+    background: var(--brick);
+    color: var(--white);
+    padding: 9px 18px;
+    border-radius: 8px;
+    border-bottom: none;
+  }
+
+  .nav-links .btn-signin:hover { background: #8f371f; }
+
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--white);
+    border-radius: 6px;
+    width: 40px;
+    height: 36px;
+    color: var(--white);
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  /* ---------- HERO ---------- */
+
+  .hero {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 64px 24px 56px;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    border: 1.5px solid var(--brick);
+    color: var(--brick);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.6px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    margin-bottom: 22px;
+  }
+
+  .headline {
+    font-size: clamp(34px, 5vw, 58px);
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .headline .accent { color: var(--brick); display: block; }
+
+  .hero-copy {
+    margin-top: 22px;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+    max-width: 46ch;
+    opacity: 0.92;
+  }
+
+  .hero-copy strong { color: var(--hunter); font-weight: 600; }
+
+  .hero-actions {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    flex-wrap: wrap;
+  }
+
+  .btn-cta {
+    background: var(--brick);
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    font-size: 14.5px;
+    padding: 16px 30px;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(168, 65, 44, 0.28);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    display: inline-block;
+  }
+
+  .btn-cta:hover,
+  .btn-cta:focus-visible {
+    background: #8f371f;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(168, 65, 44, 0.34);
+  }
+
+  .tagline {
+    font-style: italic;
+    font-size: 14.5px;
+    color: var(--hunter);
+    opacity: 0.85;
+    max-width: 26ch;
+  }
+
+  .tagline b { font-style: normal; color: var(--brick); }
+
+  /* ---------- VARSITY BADGE ---------- */
+
+  .badge-wrap {
+    display: flex;
+    justify-content: center;
+  }
+
+  .varsity-badge {
+    width: min(320px, 100%);
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: var(--hunter);
+    border: 6px double var(--gold);
+    outline: 1.5px solid var(--gold);
+    outline-offset: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 18px 40px rgba(31, 56, 35, 0.35);
+    position: relative;
+  }
+
+  .badge-miles {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: clamp(46px, 8vw, 62px);
+    color: var(--gold);
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .badge-label {
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    margin-top: 10px;
+  }
+
+  .badge-divider {
+    width: 46px;
+    height: 2px;
+    background: var(--gold);
+    margin: 16px 0;
+    opacity: 0.7;
+  }
+
+  .badge-sub {
+    color: var(--parchment);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 1.6px;
+    opacity: 0.85;
+  }
+
+  /* ---------- DIVIDER ---------- */
+
+  .section-divider {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .section-divider hr {
+    border: none;
+    height: 3px;
+    background: var(--brick);
+    border-radius: 3px;
+  }
+
+  /* ---------- FEATURED MENU ---------- */
+
+  .menu-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .section-heading {
+    color: var(--brick);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    margin-bottom: 28px;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+  }
+
+  .menu-card {
+    display: block;
+    background: var(--white);
+    border: 1px solid rgba(43, 36, 24, 0.12);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(43, 36, 24, 0.06);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .menu-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 26px rgba(43, 36, 24, 0.12);
+  }
+
+  .menu-card-img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+  }
+
+  .menu-card-body {
+    padding: 16px 16px 18px;
+  }
+
+  .menu-card-name {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .menu-card-price {
+    margin-top: 8px;
+    color: var(--brick);
+    font-weight: 600;
+    font-size: 15px;
+    font-family: 'Oswald', sans-serif;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding-top: 44px;
+      gap: 40px;
+      text-align: left;
+    }
+    .badge-wrap { order: -1; }
+    .varsity-badge { width: min(240px, 70vw); }
+    .menu-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
+    .hero { padding-left: 20px; padding-right: 20px; }
+    .hero-actions { flex-direction: column; align-items: flex-start; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .headline { font-size: clamp(30px, 9vw, 40px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="navbar">
+  <div class="nav-inner">
+    <div class="brand">
+      <span class="brand-badge" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- runner silhouette: books in trailing hand, cloche raised in leading hand -->
+          <circle cx="32" cy="14" r="6" fill="#FFFFFF"/>
+          <path d="M32 21 L27 34 L20 40" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M32 21 L38 32 L47 26" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M27 34 L23 50" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+          <path d="M32 34 L38 49" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+          <!-- books, trailing hand -->
+          <rect x="12" y="36" width="12" height="8" rx="1" fill="#FFFFFF"/>
+          <rect x="13.5" y="34" width="9" height="2" fill="#FFFFFF"/>
+          <!-- cloche, leading hand raised -->
+          <path d="M43 22 a6 6 0 0 1 12 0 z" fill="#FFFFFF"/>
+          <rect x="41.5" y="22" width="15" height="2.4" rx="1.2" fill="#FFFFFF"/>
+          <rect x="47.5" y="15" width="2" height="4" fill="#FFFFFF"/>
+        </svg>
+      </span>
+      <span class="wordmark">Campus Eats</span>
+    </div>
+
+    <button class="nav-toggle" aria-label="Open menu">☰</button>
+
+    <nav class="nav-links">
+      <a class="nav-label" href="campuseats-menu.html">Menu</a>
+      <a class="nav-label" href="#track">Track Order</a>
+      <a class="nav-label btn-signin" href="#signin">Sign In</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-text">
+    <span class="eyebrow">Wits University · Est. on this campus</span>
+    <h1 class="headline">
+      Every dorm.<br>
+      Every dollar.<br>
+      <span class="accent">Every craving.</span>
+    </h1>
+    <p class="hero-copy">
+      From the center of campus at Matrix Mall to wherever you are on main campus,
+      <strong>Campus Eats</strong> reaches you fast. Order with <strong>cash or bank
+      transfer</strong> — no card required, no account needed, just food on the way.
+    </p>
+    <div class="hero-actions">
+      <a class="btn-cta" href="campuseats-menu.html">Order Now</a>
+      <p class="tagline"><b>"Thuma Mina"</b> — send me. We run it to you.</p>
+    </div>
+  </div>
+
+  <div class="badge-wrap">
+    <div class="varsity-badge">
+      <span class="badge-miles">12mi</span>
+      <span class="badge-label">Delivery Radius</span>
+      <span class="badge-divider"></span>
+      <span class="badge-sub">Furthest dorm: 11 min away</span>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ============ FEATURED MENU ============ -->
+<section class="menu-section" id="menu">
+  <h2 class="section-heading">Today's Favorites — from Tubatsi Grill House</h2>
+  <div class="menu-grid">
+
+    <a class="menu-card" href="campuseats-menu.html#burgers">
+      <div class="menu-card-img" style="background:#A8412C;"></div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Big Boss Burger</div>
+        <div class="menu-card-price">R90</div>
+      </div>
+    </a>
+
+    <a class="menu-card" href="campuseats-menu.html#kotas">
+      <div class="menu-card-img" style="background:#C9A227;"></div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Mega Kota</div>
+        <div class="menu-card-price">R50</div>
+      </div>
+    </a>
+
+    <a class="menu-card" href="campuseats-menu.html#combo">
+      <div class="menu-card-img" style="background:#1F3823;"></div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Braai Box</div>
+        <div class="menu-card-price">R85</div>
+      </div>
+    </a>
+
+    <a class="menu-card" href="campuseats-menu.html#breakfast">
+      <div class="menu-card-img" style="background:#8C7A46;"></div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Sunshine Breakfast</div>
+        <div class="menu-card-price">R45</div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+</body>
+</html>

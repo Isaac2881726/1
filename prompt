@@ -1,0 +1,2176 @@
+# CAMPUS EATS — FULL WEBSITE DEVELOPMENT PROMPT
+
+## 1. PROJECT OBJECTIVE
+
+Build and extend the existing **CampusEats** website into a fully functional campus food-ordering platform.
+
+The existing project is hosted in this GitHub repository:
+
+**https://github.com/Thabiso203/CampusEatsWebsite**
+
+Use the existing repository as the starting point.
+
+### IMPORTANT EXISTING-PROJECT RULE
+
+Before writing or changing code:
+
+1. Inspect the entire repository.
+2. Identify the existing frontend pages, menu pages, CSS, JavaScript, images, cart functionality, checkout functionality, fonts, colours, branding, slogans, naming conventions, and existing components.
+3. Preserve the existing CampusEats visual identity.
+4. Do NOT redesign the existing website unnecessarily.
+5. Reuse the existing styling, colours, fonts, layouts, buttons, cards, navigation, food/menu templates and branding wherever possible.
+6. The existing menu and cart functionality must continue working.
+7. Build the new functionality ON TOP OF the existing project.
+8. Do NOT use or modify:
+   **`campuseats-homepage (2).html`**
+9. Do not replace existing working functionality simply because a different implementation is preferred.
+10. If existing functionality can be extended, extend it rather than rebuilding it.
+
+The GitHub repository is the source code to build from.
+
+---
+
+# 2. BUSINESS MODEL
+
+CampusEats is initially a food-ordering service specifically focused on **TUBATSI shop**.
+
+There must NOT be multiple restaurant/vendor options in the customer-facing homepage.
+
+The only vendor/shop currently available is:
+
+**TUBATSI**
+
+Do not add Uber Eats-style restaurant browsing or multiple vendors.
+
+The customer browses the TUBATSI menu, adds food to the cart and proceeds to checkout.
+
+The order does NOT get sent electronically to TUBATSI.
+
+Instead:
+
+CUSTOMER
+→ CAMPUS EATS WEBSITE
+→ CAMPUS EATS BACKEND
+→ STAFF NOTIFICATION
+→ STAFF MEMBER ACCEPTS ORDER
+→ STAFF MEMBER PHYSICALLY WALKS TO TUBATSI
+→ STAFF MEMBER PLACES THE ORDER AT TUBATSI
+→ STAFF MEMBER COLLECTS FOOD
+→ STAFF MEMBER DELIVERS TO CUSTOMER
+
+This is the core business workflow.
+
+---
+
+# 3. CURRENT FUNCTIONALITY TO PRESERVE
+
+The current project already has:
+
+* Front/home page
+* Menu page(s)
+* Existing menu template
+* Food items
+* Add-to-cart functionality
+* Cart
+* Checkout functionality
+* Existing CampusEats branding
+
+Preserve all of these.
+
+The new development should begin from the current checkout stage and add:
+
+* Customer authentication
+* Delivery location selection
+* Optional location description
+* Optional customer photo
+* Payment-method selection
+* Order creation
+* Staff notifications
+* SMS notifications
+* Staff login
+* Staff dashboard
+* Order acceptance
+* Automatic five-minute timeout
+* Order cancellation
+* Order status tracking
+* Staff processing workflow
+* Customer order tracking
+* Mobile responsiveness
+* Backend/database persistence
+
+---
+
+# 4. CUSTOMER AUTHENTICATION
+
+Customers must log in using:
+
+### Phone number
+
+The customer's phone number is their username/login identifier.
+
+### Password
+
+The customer creates their own password during registration.
+
+Do NOT use email as the primary customer login.
+
+Customer registration should include:
+
+* Full name
+* Phone number
+* Password
+* Confirm password
+
+Validate:
+
+* Phone number format
+* Required fields
+* Password strength
+* Duplicate phone number
+* Password confirmation
+
+Passwords MUST be securely hashed in the backend.
+
+Never store plaintext customer passwords.
+
+---
+
+# 5. CUSTOMER LOGIN
+
+Create a customer login page/modal consistent with the existing CampusEats design.
+
+Fields:
+
+**Phone Number**
+
+**Password**
+
+Button:
+
+**LOGIN**
+
+If credentials are incorrect, display a simple clear error such as:
+
+> Incorrect phone number or password.
+
+Do not reveal whether the phone number exists separately from whether the password is wrong.
+
+Add appropriate session/authentication handling.
+
+Customers should remain logged in appropriately across the ordering process.
+
+---
+
+# 6. STAFF AUTHENTICATION
+
+There are two distinct user types:
+
+### CUSTOMER
+
+Logs in using:
+
+* Phone number
+* Personal password
+
+### STAFF
+
+Staff members enter through the staff login area.
+
+Staff access requires the business staff passcode:
+
+**comrades_2026**
+
+IMPORTANT SECURITY REQUIREMENT:
+
+Do not hard-code the staff passcode into publicly accessible frontend JavaScript in a production implementation.
+
+Store the real credential securely on the backend/server environment using an environment variable or secure secret.
+
+The requested initial staff passcode is:
+
+`comrades_2026`
+
+If the staff passcode is incorrect, display:
+
+> Incorrect staff passcode.
+
+Staff authentication must be handled server-side.
+
+After successful staff authentication, staff members can access the staff order dashboard.
+
+---
+
+# 7. STAFF DASHBOARD
+
+Create a dedicated staff interface.
+
+It should NOT look like a completely different website.
+
+Reuse the CampusEats branding, fonts, colours and design language while making the interface practical for processing orders.
+
+The staff dashboard should contain:
+
+### Dashboard header
+
+CampusEats
+
+Staff / Orders
+
+### Order sections
+
+* New Orders
+* Accepted Orders
+* Confirmed Orders
+* Processing
+* Ready for Collection
+* Out for Delivery
+* Completed
+* Cancelled
+
+The most important section is:
+
+## NEW ORDERS
+
+New orders should be visually obvious.
+
+---
+
+# 8. STAFF ORDER NOTIFICATION
+
+When a customer successfully places an order, staff must receive a notification.
+
+The notification should contain the essential information needed to act immediately.
+
+Example:
+
+NEW CAMPUS EATS ORDER
+
+Order #10482
+
+Customer:
+Thabiso Mokoena
+
+Phone:
+082 XXX XXXX
+
+Shop:
+TUBATSI
+
+Food:
+2 × Chicken Burger
+1 × Chips
+1 × Coke
+
+Location:
+Wits Main Campus
+
+Description:
+Outside the library entrance, next to the stairs.
+
+Photo:
+Available
+
+Total:
+R245.97
+
+Time:
+14:32
+
+The staff member must be able to open the full order from the dashboard.
+
+---
+
+# 9. SMS NOTIFICATIONS TO STAFF
+
+When a new order is successfully placed, send an SMS notification to the configured staff phone numbers.
+
+The system must support MULTIPLE staff phone numbers.
+
+Example configuration:
+
+STAFF_PHONE_NUMBERS=
+
+Each configured staff phone number should receive the new-order SMS.
+
+This means:
+
+STAFF MEMBER A
+STAFF MEMBER B
+STAFF MEMBER C
+STAFF MEMBER D
+
+can all receive the notification.
+
+The staff member who is currently on duty can then open the staff dashboard and accept the order.
+
+IMPORTANT:
+
+The SMS should not need to contain every possible piece of data.
+
+Keep the SMS concise.
+
+Example:
+
+> CAMPUS EATS — NEW ORDER #10482
+> Customer: Thabiso Mokoena
+> Shop: TUBATSI
+> Items: 2x Chicken Burger, 1x Chips, 1x Coke
+> Location: Wits Main Campus
+> Note: Outside library entrance
+> Total: R245.97
+> Open CampusEats staff dashboard to accept.
+
+If a customer photo is attached, the SMS should say:
+
+> Photo available in staff dashboard.
+
+Do not attempt to send the actual image through ordinary SMS.
+
+---
+
+# 10. STAFF NOTIFICATION DELIVERY
+
+The notification system should be designed so that:
+
+1. Customer places order.
+2. Backend validates the order.
+3. Backend saves the order.
+4. Backend sends SMS notification to all configured staff numbers.
+5. New order appears in staff dashboard.
+6. Any available/on-duty staff member can accept it.
+
+Avoid creating duplicate orders if multiple staff members click ACCEPT simultaneously.
+
+The backend must guarantee that only ONE staff member can successfully claim an order.
+
+Example:
+
+Staff A clicks ACCEPT.
+
+Staff B clicks ACCEPT at almost the same time.
+
+Only one request succeeds.
+
+The other staff member should receive:
+
+> This order has already been accepted by another staff member.
+
+---
+
+# 11. CHECKOUT PAYMENT SYSTEM
+
+NO payments are made through the website.
+
+There must be NO:
+
+* Credit card checkout
+* Debit card checkout
+* PayPal
+* Stripe
+* PayFast checkout
+* Online EFT
+* In-app payment processing
+
+The website must NOT collect payment information.
+
+Instead, at checkout the customer MUST select one of two payment methods:
+
+### OPTION 1
+
+**Cash on Delivery**
+
+### OPTION 2
+
+**Transaction on Delivery**
+
+Use clear wording such as:
+
+> How will you pay?
+
+○ Cash on Delivery
+
+○ Transaction on Delivery
+
+Explain:
+
+> Payment will be made directly to the CampusEats delivery staff member when your order arrives.
+
+The customer must select one option before placing the order.
+
+The website must never request:
+
+* Card number
+* CVV
+* Expiry date
+* Bank login
+* Banking password
+* Online payment details
+
+---
+
+# 12. CHECKOUT PRICING
+
+The menu must continue displaying the existing menu prices.
+
+Do NOT alter the menu's displayed prices.
+
+Example menu:
+
+Chicken Burger — R50
+
+Fries — R20
+
+Coke — R15
+
+However, at checkout, add a **10% CampusEats service/order fee based on the food/item subtotal.**
+
+Example:
+
+Food subtotal:
+
+R85.00
+
+CampusEats 10% fee:
+
+R8.50
+
+Total:
+
+R93.50
+
+The calculation must be performed securely by the backend.
+
+Do not trust a total calculated only in frontend JavaScript.
+
+The checkout page should clearly display:
+
+### ORDER SUMMARY
+
+Chicken Burger × 1 — R50.00
+
+Fries × 1 — R20.00
+
+Coke × 1 — R15.00
+
+Food subtotal — R85.00
+
+CampusEats fee (10%) — R8.50
+
+## TOTAL — R93.50
+
+Then:
+
+### PAYMENT METHOD
+
+○ Cash on Delivery
+
+○ Transaction on Delivery
+
+Then:
+
+**PLACE ORDER**
+
+---
+
+# 13. LOCATION SYSTEM
+
+DO NOT implement GPS tracking.
+
+DO NOT require live location.
+
+DO NOT require customers to enter a conventional street address.
+
+The service is campus-focused.
+
+Customers should select their delivery building from a predefined list of Wits buildings.
+
+Create a configurable building list.
+
+Example:
+
+* Wits Main Campus
+* Wits Medical School
+* Wits Education Campus
+* Wits Science Stadium
+* Other relevant Wits buildings
+
+The exact building list should be easy for administrators to edit later.
+
+---
+
+# 14. BUILDING SELECTION
+
+At checkout show:
+
+### DELIVERY LOCATION
+
+**Select your Wits building**
+
+[ Select Building ▼ ]
+
+The customer must select a building.
+
+Also provide:
+
+**Other / I can't find my building**
+
+If selected, allow the customer to describe their location.
+
+---
+
+# 15. LOCATION DESCRIPTION
+
+Add an optional/conditional field:
+
+### WHERE EXACTLY ARE YOU?
+
+Placeholder:
+
+> Example: Outside the library entrance next to the stairs.
+
+Examples:
+
+> Outside the main entrance.
+
+> Second floor near Lecture Room 3.
+
+> At the security gate.
+
+> Next to the cafeteria.
+
+This description must be stored with the order and shown to staff.
+
+---
+
+# 16. CUSTOMER PHOTO
+
+Provide an OPTIONAL photo upload.
+
+Label:
+
+### Add a photo to help us find you (optional)
+
+Button:
+
+**Take / Upload Photo**
+
+The feature must work on mobile devices.
+
+On mobile, use the browser's camera/file capability where supported.
+
+The customer should be able to:
+
+* Take a photo
+* Select a photo from their phone
+
+The photo should be uploaded securely and associated with the specific order.
+
+Staff should be able to view it from the staff dashboard.
+
+The photo is intended to help identify the customer's location.
+
+Do NOT make the photo mandatory.
+
+---
+
+# 17. LOCATION VALIDATION
+
+The checkout should prevent an order from being submitted without enough delivery information.
+
+At minimum:
+
+* Building selected
+
+OR
+
+* "Other / I can't find my building" selected AND a description supplied.
+
+If the customer selected a normal building, the description may be optional.
+
+If they selected "Other", require a useful description.
+
+The photo remains optional.
+
+---
+
+# 18. ORDER CREATION
+
+When the customer clicks:
+
+**PLACE ORDER**
+
+the backend must create a permanent order.
+
+Generate a unique order number.
+
+Example:
+
+#10482
+
+Store:
+
+* Order ID
+* Customer ID
+* Customer name
+* Customer phone
+* Shop name = TUBATSI
+* Food items
+* Quantities
+* Original menu prices
+* Food subtotal
+* 10% CampusEats fee
+* Final total
+* Payment method
+* Building
+* Location description
+* Customer photo URL/path if provided
+* Order timestamp
+* Current status
+* Assigned staff member if accepted
+* Staff acceptance timestamp
+* Processing timestamps
+* Completion/cancellation information
+
+---
+
+# 19. ORDER STATUS SYSTEM
+
+Implement a proper order state machine.
+
+Initial status:
+
+## PENDING
+
+Immediately after customer submits the order.
+
+The customer should see:
+
+> Order received. Waiting for CampusEats staff to accept your order.
+
+Staff sees the order under:
+
+**NEW / PENDING ORDERS**
+
+---
+
+# 20. FIVE-MINUTE ACCEPTANCE TIMEOUT
+
+A staff member has a maximum of **5 minutes** to accept a pending order.
+
+The countdown begins when the order is successfully created.
+
+Example:
+
+Order placed at:
+
+14:32
+
+Acceptance deadline:
+
+14:37
+
+If ANY staff member accepts the order before the five-minute deadline:
+
+PENDING
+→ ORDER CONFIRMED
+
+The five-minute timeout must be enforced by the backend/server, not only by a frontend countdown timer.
+
+This is important because users can close their browser.
+
+---
+
+# 21. AUTOMATIC CANCELLATION
+
+If NO staff member accepts the order within five minutes:
+
+PENDING
+→ CANCELLED
+
+The customer should receive a simple message:
+
+> Sorry, we are out of order.
+
+Use this exact wording unless a better UX implementation is required around it.
+
+The customer should also see that their order was cancelled.
+
+Example:
+
+## ORDER CANCELLED
+
+> Sorry, we are out of order.
+
+No payment has been taken through the website.
+
+---
+
+# 22. STAFF MANUAL CANCELLATION
+
+Staff must also be able to cancel a pending order.
+
+If staff chooses:
+
+**CANCEL ORDER**
+
+the order becomes:
+
+PENDING
+→ CANCELLED
+
+The customer should be informed.
+
+Use the same simple message where appropriate:
+
+> Sorry, we are out of order.
+
+---
+
+# 23. ORDER ACCEPTANCE
+
+When a staff member accepts the order:
+
+PENDING
+→ ORDER CONFIRMED
+
+The system must record:
+
+* Staff member who accepted it
+* Acceptance time
+* Order ID
+
+The customer should see:
+
+> Your order has been confirmed.
+
+---
+
+# 24. STAFF PHYSICAL ORDER PROCESS
+
+This is important.
+
+The CampusEats website does NOT send the order to TUBATSI electronically.
+
+Once staff accepts the order:
+
+1. Staff receives/opens order.
+2. Staff sees TUBATSI as the shop.
+3. Staff walks to TUBATSI.
+4. Staff physically places the food order at TUBATSI.
+5. Staff waits for/collects the food.
+6. Staff delivers the food to the customer.
+
+The system should therefore allow staff to update the order status.
+
+---
+
+# 25. STAFF ORDER STATUS FLOW
+
+Implement this workflow:
+
+PENDING
+↓
+ORDER CONFIRMED
+↓
+ORDER PLACED
+↓
+FOOD READY
+↓
+OUT FOR DELIVERY
+↓
+DELIVERED
+
+Also allow:
+
+PENDING
+↓
+CANCELLED
+
+ORDER CONFIRMED
+↓
+CANCELLED
+
+where appropriate.
+
+---
+
+# 26. ORDER PLACED STATUS
+
+Immediately after accepting the order, the staff member physically goes to TUBATSI and places the order.
+
+Provide a button:
+
+**ORDER PLACED AT TUBATSI**
+
+When clicked:
+
+ORDER CONFIRMED
+→ ORDER PLACED
+
+Record the timestamp.
+
+---
+
+# 27. ESTIMATED ORDER TIME
+
+When the staff member accepts an order, show an estimated preparation/delivery time of approximately:
+
+**10 minutes**
+
+Example:
+
+> Estimated delivery time: approximately 10 minutes.
+
+This is an estimate and should not be presented as a guaranteed exact time.
+
+Store the estimated time in the order.
+
+---
+
+# 28. FOOD READY
+
+When staff collects the food from TUBATSI:
+
+**MARK FOOD READY**
+
+Then:
+
+ORDER PLACED
+→ FOOD READY
+
+---
+
+# 29. OUT FOR DELIVERY
+
+When the staff member leaves TUBATSI with the customer's food:
+
+**START DELIVERY**
+
+Then:
+
+FOOD READY
+→ OUT FOR DELIVERY
+
+The customer sees:
+
+> Your order is on the way.
+
+No GPS tracking is required.
+
+---
+
+# 30. DELIVERED
+
+When the customer receives the food:
+
+**MARK AS DELIVERED**
+
+Then:
+
+OUT FOR DELIVERY
+→ DELIVERED
+
+The order becomes complete.
+
+---
+
+# 31. CUSTOMER ORDER TRACKING
+
+After placing an order, redirect the customer to:
+
+## ORDER CONFIRMATION / ORDER TRACKING
+
+Display:
+
+Order #10482
+
+TUBATSI
+
+### Status
+
+● Order placed
+
+● Waiting for staff
+
+○ Order confirmed
+
+○ Order placed at TUBATSI
+
+○ Food ready
+
+○ Out for delivery
+
+○ Delivered
+
+Update this status as the backend changes.
+
+---
+
+# 32. CUSTOMER ORDER HISTORY
+
+Customers should have a:
+
+**My Orders**
+
+page.
+
+Display:
+
+* Order number
+* Date
+* TUBATSI
+* Items
+* Total
+* Payment method
+* Building
+* Status
+
+Allow the customer to open an old order and see its details.
+
+---
+
+# 33. CUSTOMER NOTIFICATIONS
+
+Customers should receive appropriate notifications/status updates.
+
+Examples:
+
+When submitted:
+
+> Your order has been received and is waiting for staff confirmation.
+
+When accepted:
+
+> Your order has been confirmed. A CampusEats staff member is placing your order at TUBATSI.
+
+When order is placed:
+
+> Your order has been placed at TUBATSI. Estimated delivery time: about 10 minutes.
+
+When ready:
+
+> Your food is ready and will be delivered shortly.
+
+When out for delivery:
+
+> Your order is on the way.
+
+When delivered:
+
+> Your CampusEats order has been delivered. Enjoy your meal!
+
+When automatically cancelled:
+
+> Sorry, we are out of order.
+
+---
+
+# 34. STAFF ORDER CARD
+
+Each pending order should have a clear staff card.
+
+Example:
+
+---
+
+NEW ORDER #10482
+
+CUSTOMER
+Thabiso Mokoena
+082 XXX XXXX
+
+SHOP
+TUBATSI
+
+FOOD
+2 × Chicken Burger
+1 × Chips
+1 × Coke
+
+LOCATION
+Wits Main Campus
+
+DESCRIPTION
+Outside library entrance next to stairs.
+
+PHOTO
+[VIEW PHOTO]
+
+PAYMENT
+Cash on Delivery
+
+TOTAL
+R93.50
+
+TIME REMAINING
+04:32
+
+[ ACCEPT ORDER ]
+
+[ CANCEL ORDER ]
+
+---
+
+The countdown must be visually obvious.
+
+---
+
+# 35. STAFF DASHBOARD FILTERS
+
+Allow staff to filter:
+
+* Pending
+* Confirmed
+* Order Placed
+* Food Ready
+* Out for Delivery
+* Delivered
+* Cancelled
+
+Also show newest orders first.
+
+---
+
+# 36. STAFF "ON DUTY" CONCEPT
+
+The system should support multiple staff members receiving notifications.
+
+Any authenticated staff member can accept an available pending order.
+
+Once accepted, that order becomes assigned to that staff member.
+
+Display:
+
+**Accepted by: Staff Member Name**
+
+Other staff cannot accept the same order.
+
+---
+
+# 37. STAFF PROFILE
+
+Store staff identity so the system knows who accepted an order.
+
+Staff record can contain:
+
+* Staff ID
+* Name
+* Phone number
+* Active/inactive status
+
+Staff members should not need individual complex accounts for the first version if the existing project does not support them.
+
+However, architect the system so individual staff accounts can be introduced later.
+
+---
+
+# 38. DATABASE DESIGN
+
+Create a persistent database/backend.
+
+At minimum create models/tables/entities for:
+
+### Customers
+
+* id
+* name
+* phone
+* password_hash
+* created_at
+
+### Staff
+
+* id
+* name
+* phone
+* active
+
+### Buildings
+
+* id
+* name
+* active
+
+### Menu Items
+
+Use the existing menu implementation where possible.
+
+### Orders
+
+* id
+* customer_id
+* shop_name
+* status
+* payment_method
+* food_subtotal
+* campus_eats_fee
+* total
+* building_id
+* location_description
+* photo_url
+* created_at
+* acceptance_deadline
+* accepted_at
+* accepted_by
+* order_placed_at
+* food_ready_at
+* out_for_delivery_at
+* delivered_at
+* cancelled_at
+
+### Order Items
+
+* id
+* order_id
+* menu_item_id
+* item_name
+* quantity
+* unit_price
+* subtotal
+
+Store the price at the time of ordering so future menu price changes do not alter historical orders.
+
+---
+
+# 39. BACKEND REQUIREMENTS
+
+Do not implement the complete ordering system using only frontend JavaScript/localStorage.
+
+A real backend is required for:
+
+* Customer accounts
+* Staff authentication
+* Orders
+* Order status
+* Five-minute timeout
+* Staff acceptance locking
+* SMS notifications
+* Photo uploads
+* Database storage
+
+The backend must be the authoritative source of order status.
+
+---
+
+# 40. API REQUIREMENTS
+
+Create appropriate API endpoints.
+
+Examples:
+
+POST /api/auth/register
+
+POST /api/auth/login
+
+POST /api/staff/login
+
+GET /api/menu
+
+GET /api/orders
+
+POST /api/orders
+
+GET /api/orders/:id
+
+GET /api/customer/orders
+
+GET /api/staff/orders/pending
+
+POST /api/staff/orders/:id/accept
+
+POST /api/staff/orders/:id/cancel
+
+POST /api/staff/orders/:id/order-placed
+
+POST /api/staff/orders/:id/food-ready
+
+POST /api/staff/orders/:id/out-for-delivery
+
+POST /api/staff/orders/:id/delivered
+
+POST /api/orders/:id/photo
+
+The exact API design may be adapted to the existing project architecture.
+
+---
+
+# 41. CONCURRENCY PROTECTION
+
+This is critical.
+
+Two staff members may receive the same SMS.
+
+Both may attempt to accept the same order.
+
+The backend must guarantee:
+
+# ONE ORDER
+
+ONE STAFF ASSIGNMENT
+
+Use database transactions, atomic update, locking, or another reliable server-side mechanism.
+
+Never rely solely on frontend checks.
+
+---
+
+# 42. FIVE-MINUTE TIMER IMPLEMENTATION
+
+Do NOT rely exclusively on:
+
+setTimeout()
+
+in the browser.
+
+The server must determine whether five minutes have elapsed.
+
+Use:
+
+created_at
+
+and:
+
+acceptance_deadline
+
+or equivalent server-side timestamps.
+
+When a pending order is requested or processed, verify whether it has expired.
+
+Ideally also use a background scheduled job/worker to automatically transition expired pending orders to CANCELLED.
+
+---
+
+# 43. SMS SERVICE
+
+Integrate a real SMS provider using a backend environment variable for credentials.
+
+Do not expose SMS API credentials in frontend JavaScript.
+
+Environment variables should contain values such as:
+
+SMS_API_KEY
+
+SMS_API_SECRET
+
+SMS_SENDER_ID
+
+STAFF_PHONE_NUMBERS
+
+The exact SMS provider can be selected during implementation.
+
+Make the notification service modular so the provider can be changed later.
+
+---
+
+# 44. PHOTO STORAGE
+
+Customer location photos must not be stored directly inside database records as large binary data unless the chosen architecture specifically requires it.
+
+Prefer:
+
+Customer uploads photo
+→ backend validates image
+→ secure file/object storage
+→ database stores photo URL/reference
+
+Validate:
+
+* File type
+* File size
+* Upload permissions
+* Safe filenames
+* Authentication
+
+Only the customer associated with the order and authorized staff should be able to access the image.
+
+---
+
+# 45. MOBILE RESPONSIVENESS
+
+The entire website must be fully responsive.
+
+It must work on:
+
+* Android phones
+* iPhones
+* Tablets
+* Laptops
+* Desktop computers
+
+Do not design desktop-first and ignore mobile.
+
+Pay particular attention to:
+
+* Menu cards
+* Cart
+* Checkout
+* Building dropdown
+* Photo upload
+* Payment method selection
+* Order tracking
+* Staff dashboard
+* Staff order cards
+* Buttons
+* Navigation
+* SMS/dashboard workflow
+
+On mobile, buttons must be large enough to tap comfortably.
+
+---
+
+# 46. MOBILE PHOTO CAPTURE
+
+On supported mobile devices, the photo input should allow the user to use their camera.
+
+For example, use the appropriate HTML/browser capabilities for an image input.
+
+The implementation must still allow selecting an existing image from the device.
+
+---
+
+# 47. ERROR HANDLING
+
+Implement proper errors.
+
+### Incorrect customer login
+
+> Incorrect phone number or password.
+
+### Incorrect staff passcode
+
+> Incorrect staff passcode.
+
+### Expired order
+
+> Sorry, we are out of order.
+
+### Order already accepted
+
+> This order has already been accepted by another staff member.
+
+### Failed order creation
+
+> We couldn't place your order. Please try again.
+
+### Missing building
+
+> Please select your delivery building.
+
+### Missing location description for "Other"
+
+> Please describe where we can find you.
+
+### Photo upload failure
+
+> We couldn't upload your photo. Please try again.
+
+### Server error
+
+> Something went wrong. Please try again.
+
+---
+
+# 48. 404 PAGE
+
+Create a proper 404 page matching the existing CampusEats design.
+
+Example:
+
+## 404
+
+> We couldn't find that page.
+
+Button:
+
+**Back to CampusEats**
+
+Do not create a generic ugly browser-style error page.
+
+---
+
+# 49. OTHER ERROR PAGES
+
+Where appropriate include:
+
+* 400 Bad Request
+* 401 Unauthorized
+* 403 Forbidden
+* 404 Not Found
+* 500 Server Error
+* Network/offline error
+
+Keep all of them visually consistent with CampusEats.
+
+---
+
+# 50. SECURITY
+
+Implement:
+
+* HTTPS in production
+* Password hashing
+* Secure authentication
+* Session/token security
+* Backend authorization
+* Input validation
+* File upload validation
+* Rate limiting
+* SQL/NoSQL injection protection
+* XSS protection
+* CSRF protection where applicable
+* Secure HTTP headers
+* Environment variables for secrets
+* No API keys in frontend
+* No SMS credentials in frontend
+* No plaintext customer passwords
+* No plaintext sensitive credentials in the database
+
+Most importantly:
+
+DO NOT expose the staff passcode or SMS API credentials in client-side JavaScript.
+
+---
+
+# 51. NO GPS
+
+This project intentionally DOES NOT require:
+
+* GPS
+* Google Maps
+* Live driver tracking
+* Customer coordinates
+* Real-time location sharing
+
+The location system is:
+
+WITS BUILDING
++
+OPTIONAL DESCRIPTION
++
+OPTIONAL PHOTO
+
+This is intentional and should not be replaced with GPS.
+
+---
+
+# 52. TUBATSI ONLY
+
+The customer interface should clearly show that the current food supplier/shop is:
+
+# TUBATSI
+
+Do not create:
+
+* McDonald's
+* KFC
+* Debonairs
+* Multiple restaurant cards
+* Restaurant marketplace
+* Vendor selection
+
+The architecture may support additional vendors in the future, but the current production/customer interface must only use TUBATSI.
+
+---
+
+# 53. PRICING RULE
+
+Menu prices:
+
+UNCHANGED.
+
+Checkout:
+
+Food subtotal
++
+10% CampusEats fee
+==================
+
+Final total
+
+Example:
+
+Menu:
+
+Burger = R60
+
+Checkout:
+
+Burger = R60
+
+CampusEats fee = R6
+
+Total = R66
+
+Do not add hidden charges.
+
+Clearly display the 10% fee before the customer places the order.
+
+---
+
+# 54. PAYMENT RULE
+
+NO PAYMENT THROUGH THE WEBSITE.
+
+The website only records the customer's chosen payment method:
+
+CASH ON DELIVERY
+
+or
+
+TRANSACTION ON DELIVERY
+
+The actual payment happens physically when the food is delivered.
+
+The order should store the selected method.
+
+---
+
+# 55. CUSTOMER PHOTO PRIVACY
+
+Treat location photos as private order information.
+
+Do not expose customer photos publicly.
+
+Do not place them in public galleries.
+
+Only authorized staff should be able to view them.
+
+---
+
+# 56. ORDER HISTORY AND ACCOUNT DATA
+
+Customers should be able to see their own orders.
+
+A customer must never be able to access another customer's:
+
+* Name
+* Phone
+* Order
+* Location
+* Photo
+* Payment information
+
+Staff can see information required to fulfil orders.
+
+---
+
+# 57. ADMIN/STAFF ORDER INFORMATION
+
+For staff, display:
+
+* Order number
+* Customer name
+* Customer phone
+* TUBATSI
+* Food ordered
+* Quantity
+* Food prices
+* 10% CampusEats fee
+* Total
+* Payment method
+* Wits building
+* Location description
+* Customer photo
+* Order timestamp
+* Current status
+* Staff member assigned
+* Estimated delivery time
+
+---
+
+# 58. ORDER ESTIMATION
+
+When accepted:
+
+Display:
+
+## ESTIMATED DELIVERY
+
+Approximately:
+
+**10 minutes**
+
+This is based on the staff member walking to TUBATSI, placing the order and returning/delivering it.
+
+Do not claim that the food is guaranteed to arrive exactly ten minutes later.
+
+---
+
+# 59. UI/UX PRINCIPLE
+
+The existing CampusEats website already has a visual identity.
+
+DO NOT replace it with a generic AI-generated design.
+
+Preserve:
+
+* Existing colours
+* Existing typography
+* Existing logo
+* Existing slogans
+* Existing wording/naming
+* Existing navigation
+* Existing menu card style
+* Existing buttons
+* Existing spacing/layout
+* Existing food images
+* Existing visual style
+
+Only introduce new components where necessary.
+
+The new checkout, authentication, order tracking and staff dashboard should feel like they belong to the same CampusEats website.
+
+---
+
+# 60. CHECKOUT FLOW
+
+The final customer flow must be:
+
+HOME
+↓
+TUBATSI MENU
+↓
+SELECT FOOD
+↓
+ADD TO CART
+↓
+CART
+↓
+CHECKOUT
+↓
+REVIEW FOOD
+↓
+FOOD SUBTOTAL
+↓
+10% CAMPUS EATS FEE
+↓
+TOTAL
+↓
+SELECT PAYMENT METHOD
+
+* CASH ON DELIVERY
+* TRANSACTION ON DELIVERY
+  ↓
+  SELECT WITS BUILDING
+  ↓
+  OPTIONAL LOCATION DESCRIPTION
+  ↓
+  OPTIONAL PHOTO
+  ↓
+  PLACE ORDER
+  ↓
+  ORDER CREATED
+  ↓
+  CUSTOMER SEES PENDING STATUS
+  ↓
+  STAFF SMS + DASHBOARD NOTIFICATION
+  ↓
+  STAFF ACCEPTS
+  ↓
+  ORDER CONFIRMED
+  ↓
+  STAFF WALKS TO TUBATSI
+  ↓
+  ORDER PLACED
+  ↓
+  FOOD READY
+  ↓
+  OUT FOR DELIVERY
+  ↓
+  DELIVERED
+
+---
+
+# 61. FAILED ORDER FLOW
+
+If staff does not accept within five minutes:
+
+ORDER CREATED
+↓
+PENDING
+↓
+5 MINUTES PASS
+↓
+AUTOMATICALLY CANCELLED
+↓
+CUSTOMER NOTIFIED
+
+Message:
+
+> Sorry, we are out of order.
+
+The order must be marked cancelled in the database.
+
+---
+
+# 62. MANUAL STAFF CANCELLATION FLOW
+
+If staff cancels:
+
+PENDING
+↓
+STAFF CANCELS
+↓
+CANCELLED
+↓
+CUSTOMER NOTIFIED
+
+Message:
+
+> Sorry, we are out of order.
+
+---
+
+# 63. ACCEPTED ORDER FLOW
+
+If staff accepts:
+
+PENDING
+↓
+STAFF ACCEPTS
+↓
+ORDER CONFIRMED
+↓
+CUSTOMER NOTIFIED
+↓
+STAFF PLACES ORDER AT TUBATSI
+↓
+ORDER PLACED
+↓
+FOOD READY
+↓
+OUT FOR DELIVERY
+↓
+DELIVERED
+
+---
+
+# 64. CUSTOMER EXPERIENCE
+
+The customer should always know:
+
+1. What they ordered.
+2. How much they owe.
+3. How they will pay.
+4. Where the food should be delivered.
+5. Whether staff accepted the order.
+6. Whether the order has been placed at TUBATSI.
+7. Whether the food is ready.
+8. Whether the staff member is delivering it.
+9. Whether the order is complete.
+
+---
+
+# 65. STAFF EXPERIENCE
+
+Staff should be able to:
+
+1. Log in.
+2. See new orders.
+3. Receive SMS notification.
+4. Open the order.
+5. See customer information.
+6. See TUBATSI.
+7. See food ordered.
+8. See Wits building.
+9. See location description.
+10. View customer photo.
+11. See payment method.
+12. Accept the order.
+13. Place the order physically at TUBATSI.
+14. Mark order placed.
+15. Mark food ready.
+16. Mark out for delivery.
+17. Mark delivered.
+18. Cancel where appropriate.
+
+---
+
+# 66. REAL-TIME DASHBOARD
+
+Where practical, the staff dashboard should update when a new order arrives without requiring constant manual refresh.
+
+Use an appropriate method based on the existing architecture:
+
+* WebSockets
+* Server-Sent Events
+* Polling
+* Existing realtime infrastructure
+
+Choose the simplest reliable approach compatible with the current project.
+
+---
+
+# 67. DATABASE PERSISTENCE
+
+Do not rely on browser localStorage for real orders.
+
+Cart data may use the existing implementation if appropriate, but once the customer places the order:
+
+THE ORDER MUST BE SAVED SERVER-SIDE.
+
+If the customer closes the browser, the order must still exist.
+
+If staff refreshes their dashboard, the order must still exist.
+
+If the server restarts, persistent order data must remain.
+
+---
+
+# 68. TESTING
+
+Implement tests for the most important business rules.
+
+Test:
+
+### Authentication
+
+* Customer registration
+* Customer login
+* Wrong password
+* Duplicate phone
+* Staff passcode
+* Wrong staff passcode
+
+### Checkout
+
+* Correct subtotal
+* Correct 10% fee
+* Correct total
+* Payment method required
+* Building required
+* Other location requires description
+
+### Orders
+
+* Order creation
+* Unique order ID
+* Correct customer
+* Correct food
+* Correct total
+
+### Acceptance
+
+* Staff accepts order
+* Only one staff member can accept
+* Accepted order changes to confirmed
+
+### Timeout
+
+* Pending order expires after five minutes
+* Expired order cannot be accepted
+* Customer receives cancellation status
+
+### Status
+
+* Confirmed
+* Order placed
+* Food ready
+* Out for delivery
+* Delivered
+
+### Photo
+
+* Valid photo upload
+* Invalid file rejected
+* Staff can view authorized order photo
+
+### SMS
+
+* All configured staff numbers receive notification
+* SMS failure is logged
+* SMS credentials are not exposed
+
+---
+
+# 69. RESPONSIVE TESTING
+
+Test the website at minimum on:
+
+* Small mobile phone
+* Large mobile phone
+* Tablet
+* Laptop
+* Desktop
+
+Pay particular attention to checkout and staff order cards.
+
+---
+
+# 70. ENVIRONMENT CONFIGURATION
+
+Use environment variables for secrets and configuration.
+
+Examples:
+
+DATABASE_URL=
+
+JWT_SECRET=
+
+STAFF_PASSCODE=
+
+SMS_API_KEY=
+
+SMS_API_SECRET=
+
+SMS_SENDER_ID=
+
+STAFF_PHONE_NUMBERS=
+
+PHOTO_STORAGE configuration as required.
+
+Do not commit real credentials to GitHub.
+
+---
+
+# 71. DEPLOYMENT
+
+The final application must be deployable as a real website.
+
+Provide:
+
+* Frontend
+* Backend
+* Database
+* Environment configuration
+* Production build
+* HTTPS
+* Domain configuration
+* SMS provider configuration
+* File/photo storage
+* Error logging
+* Database backups where appropriate
+
+The implementation should include clear deployment instructions.
+
+---
+
+# 72. WEBSITE LINK
+
+The final website should have a production URL/domain once deployed.
+
+Do not invent a fake production URL.
+
+If deployment is not possible in the current development environment, provide:
+
+1. The local development URL.
+2. The production deployment steps.
+3. The exact place where the production domain should be configured.
+
+The GitHub repository should remain the source repository.
+
+---
+
+# 73. CODE QUALITY
+
+Do not create one giant HTML or JavaScript file containing the entire application.
+
+Use the architecture appropriate for the existing repository.
+
+Separate:
+
+* UI
+* Authentication
+* API communication
+* Database
+* Business logic
+* Order logic
+* Notifications
+* SMS
+* File uploads
+* Staff dashboard
+* Customer dashboard
+
+Keep the code maintainable.
+
+---
+
+# 74. IMPORTANT DEVELOPMENT RULE
+
+Before implementing anything, inspect the existing GitHub repository and determine:
+
+* Existing framework
+* Existing frontend architecture
+* Existing backend, if any
+* Existing database, if any
+* Existing menu implementation
+* Existing cart implementation
+* Existing checkout implementation
+* Existing styling system
+* Existing assets
+* Existing dependencies
+
+Then integrate the new system into that architecture.
+
+Do NOT blindly introduce a completely different framework.
+
+Do NOT delete existing working functionality.
+
+Do NOT replace the existing CampusEats design.
+
+Do NOT use:
+
+`campuseats-homepage (2).html`
+
+as part of the implementation.
+
+---
+
+# 75. FINAL ACCEPTANCE CRITERIA
+
+The project is considered complete only when the following complete workflow works:
+
+CUSTOMER:
+
+Register with phone + password
+↓
+Login
+↓
+Open TUBATSI menu
+↓
+Add food
+↓
+Open cart
+↓
+Checkout
+↓
+See original food prices
+↓
+See 10% CampusEats fee
+↓
+See final total
+↓
+Choose:
+Cash on Delivery OR Transaction on Delivery
+↓
+Choose Wits building
+↓
+Optionally describe location
+↓
+Optionally upload photo
+↓
+Place order
+↓
+See PENDING status
+
+STAFF:
+
+Receive SMS
+↓
+Open staff dashboard
+↓
+See new order
+↓
+See customer
+↓
+See TUBATSI
+↓
+See food
+↓
+See total
+↓
+See payment method
+↓
+See Wits building
+↓
+See description
+↓
+View photo if provided
+↓
+Accept within 5 minutes
+↓
+Order becomes CONFIRMED
+
+STAFF:
+
+Walk to TUBATSI
+↓
+Place order
+↓
+Mark ORDER PLACED
+↓
+Collect food
+↓
+Mark FOOD READY
+↓
+Deliver
+↓
+Mark OUT FOR DELIVERY
+↓
+Deliver to customer
+↓
+Mark DELIVERED
+
+OR:
+
+No staff accepts within 5 minutes
+↓
+Automatically CANCELLED
+↓
+Customer sees:
+
+"Sorry, we are out of order."
+
+---
+
+# 76. FINAL INSTRUCTION TO THE DEVELOPMENT AGENT
+
+Treat this document as the functional specification.
+
+Start by inspecting the existing repository.
+
+First understand what already exists.
+
+Then implement the missing backend, database, authentication, checkout extensions, order-management system, staff dashboard, SMS notification system, location system, photo upload system and order-status workflow.
+
+Preserve the existing CampusEats design and functionality.
+
+Do not remove working features.
+
+Do not introduce online payments.
+
+Do not introduce GPS.
+
+Do not introduce multiple vendors.
+
+The only current shop is:
+
+**TUBATSI**
+
+The platform is:
+
+**CampusEats**
+
+The customer pays physically upon delivery using either:
+
+**Cash on Delivery**
+
+or
+
+**Transaction on Delivery**
+
+The customer location consists of:
+
+**Wits Building + optional description + optional photo**
+
+The staff receives:
+
+**SMS + staff dashboard notification**
+
+The order acceptance deadline is:
+
+**5 minutes**
+
+The estimated fulfilment/delivery time after staff acceptance is:
+
+**approximately 10 minutes**
+
+The CampusEats checkout fee is:
+
+**10% of the food/item subtotal**
+
+The website must be:
+
+**mobile responsive + desktop compatible**
+
+Build this as a real full-stack application rather than a frontend-only demonstration.
